@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head lang="ja">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta description="FINAL FANTASY XIVでテレポする料金を計算します。">
+		<title>シャーレタイム</title>
+		<script src="jquery-3.6.0.min.js"></script>
+		<script src="popper.min.js"></script>
+		<script src="bootstrap.min.js"></script>
+		<link href="bootstrap.min.css" rel="stylesheet">
+		<link href="main.css?20210517" rel="stylesheet">
+		<!-- ダークモード -->
+		<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+		<script src="dark-mode.js?20200327"></script>
+		<link href="style.css?20210818" rel="stylesheet">
+	</head>
+	<body>
+		<div class="jumbotron">
+			<div class="container">
+				<h1>シャーレタイム</h1>
+				<p id="comment">FF14で各地をテレポ・デジョンする時に、料金の安いルートを検索します。</p>
+			</div>
+		</div>
+		<div class="container">
+			<div class="alert alert-success">出発・到着・通過するエーテライトにチェックを入れてください</div>
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a class="nav-link active" href="#myhouse">冒険者居住区</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">エオルゼア</a>
+					<div class="dropdown-menu">
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#lanoscea" role="tab" aria-controls="profile" aria-selected="false">ラノシア</a>
+					</div>
+				</li>
+			</ul>
+			<div class="tab-content container">
+				<div class="tab-pane fade show active" id="myhouse">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-mist-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-mist-end"></td>
+								<td><input type="checkbox" name="aetheryte-pass" value="" id="aetheryte-mist-pass"></td>
+								<td>ミストヴィレッジ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="friend-mist-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="friend-mist-end"></td>
+								<td><input type="checkbox" name="aetheryte-pass" value="" id="friend-mist-pass"></td>
+								<td>ミストヴィレッジ(フレンドテレポ)</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-panei fade" id="lanoscea">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-limsa-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-limsa-end"></td>
+								<td><input class="form-check-input" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-limsa-pass"></td>
+								<td>リムサ・ロミンサ：下甲板層</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+		<br />
+
+		<div class="jumbotron">
+			<div class="container">
+				<h3>使い方</h3>
+				<ul>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+		<div class="jumbotron">
+			<div class="container">
+				<h3>謝辞</h3>
+				<ul>
+					<li>テレポ料金の計算・集計・テストを手伝っていただいたみなさま。ありがとうございます。</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="jumbotron">
+			<div class="container">
+				<h3>本ツールについて</h3>
+				<ul>
+					<li>本ツールはファイナルファンタジーXIVのテレポ・デジョンという移動手段のサポートを行います。</li>
+					<ul>
+						<li>記載されている会社名・製品名・システム名などは、各社の商標、または登録商標です。</li>
+					</ul>
+					<li>ソースコードはGithub上で公開しています。<a href="https://github.com/gelehrtecrest/shalatime" target="_blank">https://github.com/gelehrtecrest/shalatime</a></li>
+					<li>本ツールのclone及び可変・再配布などはご自由に。</li>
+					<li>その他お問い合わせなどは <a href="https://twitter.com/gelehrte_crest" target="_blank">@gelehrte_crest</a>へレスもしくはDMお願いします。</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="jumbotron">
+			<div class="container">
+				<h3>更新履歴</h3>
+				<ul>
+					<li> 2021/09/27 サイト構築開始</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

@@ -26,8 +26,12 @@
 		<div class="container">
 			<div class="alert alert-success">出発・到着・通過するエーテライトにチェックを入れてください</div>
 			<ul class="nav nav-tabs">
-				<li class="nav-item">
-					<a class="nav-link active" href="#myhouse">冒険者居住区</a>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">居住区</a>
+					<div class="dropdown-menu">
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#myhouse" role="tab" aria-controls="profile" aria-selected="false">FC/マイハウス</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#friend" role="tab" aria-controls="profile" aria-selected="false">フレンドテレポ</a>
+					</div>
 				</li>
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">エオルゼア</a>
@@ -72,6 +76,20 @@
 								<td><input type="checkbox" name="aetheryte-pass" value="" id="aetheryte-shirogane-pass"></td>
 								<td id="aetheryte-shirogane">シロガネ</td>
 							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade show active" id="friend">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
 							<tr>
 								<td><input type="radio" name="aetheryte-start" id="friend-mist-start"></td>
 								<td><input type="radio" name="aetheryte-end" id="friend-mist-end"></td>

@@ -21,20 +21,21 @@ $(function() {
         //一行目は見出しなので削除
         csv.shift();
 
-        var jsondata = gzuncompress($.cookie("jsondata"));
+        var jsondata = $.cookie("jsondata");
         get_data = JSON.parse(jsondata);
         console.log(get_data);
         $(csv).each(function(i) {
-            cookie_get(this[0].toString());
+            cookie_get(this[0].toString(), this[1].toString());
         });
     }
     $.get('aetheryte_id_list.csv', parseCsv, 'text');
 
     // クッキーからデータ取得
-    function cookie_get(str){
+    function cookie_get(num, str){
         $.each(id_suffix, function(_, value) {
+            var num_key = num + value;
             var key = str + value;
-            var cookie_data = get_data[key];
+            var cookie_data = get_data[num_key];
             set_value(key, cookie_data);
         });
     }
@@ -75,21 +76,21 @@ $(function() {
         csv.shift();
         set_data = new Object();
         $(csv).each(function(i) {
-            cookie_set(this[0].toString());
+            cookie_set(this[0].toString(), this[1].toString());
         });
         var jsondata = JSON.stringify(set_data);
         console.log(jsondata);
-        console.log(gzcompress(jsondata));
-        $.cookie("jsondata", gzcompress(jsondata), {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
+        $.cookie("jsondata", jsondata, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
     }
-    function cookie_set(str){
+    function cookie_set(num, str){
         
         $.each(id_suffix, function(_, value) {
+            var num_key = num + value;
             var key = str + value;
             if ($('#' + key).prop("checked") == true) {
-                set_data[key] = yes;
+                set_data[num_key] = yes;
             } else {
-                set_data[key] = no;
+                set_data[num_key] = no;
             }
         });
         

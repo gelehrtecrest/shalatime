@@ -21,7 +21,7 @@ $(function() {
         //一行目は見出しなので削除
         csv.shift();
 
-        var jsondata = $.cookie("jsondata");
+        var jsondata = gzuncompress($.cookie("jsondata"));
         get_data = JSON.parse(jsondata);
         console.log(get_data);
         $(csv).each(function(i) {
@@ -79,7 +79,7 @@ $(function() {
         });
         var jsondata = JSON.stringify(set_data);
         console.log(jsondata);
-        $.cookie("jsondata", jsondata, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
+        $.cookie("jsondata", gzcompress(jsondata), {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
     }
     function cookie_set(str){
         

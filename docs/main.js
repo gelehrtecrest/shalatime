@@ -70,7 +70,7 @@ $(function() {
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             console.log(key);
-            if ($(key).prop("checked") == true) {
+            if ($('#' + key).prop("checked") == true) {
                 $.cookie(key, 1, { expires: 30 });
                 console.log(1);
             } else {

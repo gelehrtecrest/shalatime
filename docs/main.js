@@ -37,6 +37,12 @@ $(function() {
     function set_value(key, data){
         console.log(key);
         console.log(data);
+        
+        // クッキー読み込むタイミングで、undefinedになったら処理をとばす
+        if (data === undefined){
+            return;
+        }
+
         if(data >= 1){
             $('#' + key).prop("checked", true);
         } else {

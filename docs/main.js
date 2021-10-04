@@ -35,9 +35,12 @@ $(function() {
 
     // 取得したデータからinputに反映
     function set_value(key, data){
-        console.log(key);
-        console.log(data);
-        
+        if(key == "aetheryte-mist-start"){
+            console.log("aetheryte-mist-start---------get");
+            console.log(key);
+            console.log(data);
+        }
+
         // クッキー読み込むタイミングで、undefinedになったら処理をとばす
         if (data === undefined){
             return;
@@ -77,13 +80,20 @@ $(function() {
     function cookie_set(str){
         $.each(id_suffix, function(_, value) {
             var key = str + value;
-            console.log(key);
             if ($('#' + key).prop("checked") == true) {
                 $.cookie(key, 1, { expires: 30 });
-                console.log(1);
+                if(key == "aetheryte-mist-start"){
+                    console.log("aetheryte-mist-start---------set");
+                    console.log(key);
+                    console.log(1);
+                }
             } else {
                 $.cookie(key, -1, { expires: 30 });
-                console.log(-1);
+                if(key == "aetheryte-mist-start"){
+                    console.log("aetheryte-mist-start---------set");
+                    console.log(key);
+                    console.log(-1);
+                }
             }
         });
     }    

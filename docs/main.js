@@ -14,12 +14,15 @@ $(function() {
     // クッキーから情報を取得する。
     // CSVファイルからidを取得
 
+    var get_data;
     function parseCsv(data) {
         var csv = $.csv.toArrays(data);
 
         //一行目は見出しなので削除
         csv.shift();
 
+        var jsondata = $.cookie("jsondata");
+        get_data = JSON.parse(jsondata);
         $(csv).each(function(i) {
             cookie_get(this[0].toString());
         });
@@ -28,12 +31,9 @@ $(function() {
 
     // クッキーからデータ取得
     function cookie_get(str){
-        var jsondata = $.cookie("jsondata");
-        var arraydata = JSON.parse(jsondata);
-        console.log(arraydata);
         $.each(id_suffix, function(_, value) {
             var key = str + value;
-            var cookie_data = arraydata[key];
+            var cookie_data = get_data[key];
             set_value(key, cookie_data);
         });
     }
@@ -66,28 +66,30 @@ $(function() {
     function cookie_all_set(){
         $.get('aetheryte_id_list.csv', setparseCsv, 'text');
     }
+    var set_data;
     function setparseCsv(data) {
         var csv = $.csv.toArrays(data);
 
         //一行目は見出しなので削除
         csv.shift();
-
+        set_data = new Object();
         $(csv).each(function(i) {
             cookie_set(this[0].toString());
-        });    
+        });
+        var jsondata = JSON.stringify(set_data);
+        $.cookie("jsondata", jsondata, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
     }
     function cookie_set(str){
-        var array_data = new Object();
+        
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             if ($('#' + key).prop("checked") == true) {
-                array_data[key] = yes;
+                set_data[key] = yes;
             } else {
-                array_data[key] = no;
+                set_data[key] = no;
             }
         });
-        var jsondata = JSON.stringify(array_data);
-        $.cookie("jsondata", jsondata, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
+        
     }    
 
     // クッキーに情報を格納しないチェックのときには、情報を全削除する

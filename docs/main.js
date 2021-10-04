@@ -28,23 +28,17 @@ $(function() {
 
     // クッキーからデータ取得
     function cookie_get(str){
+        var jsondata = $.cookie("jsondata");
+        var arraydata = JSON.parse(jsondata);
         $.each(id_suffix, function(_, value) {
             var key = str + value;
-            var cookie_data = $.cookie(key);
+            var cookie_data = arraydata[key];
             set_value(key, cookie_data);
         });
     }
 
     // 取得したデータからinputに反映
     function set_value(key, cookie_data){
-        if(key == "aetheryte-mist-start"){
-            console.log("aetheryte-mist-start---------get");
-            console.log(key);
-            console.log(cookie_data);
-            test_data = $.cookie("test");
-            console.log(test_data);
-        }
-
         // クッキー読み込むタイミングで、undefinedになったら処理をとばす
         if (cookie_data === undefined){
             return;
@@ -60,10 +54,6 @@ $(function() {
 
     // クッキーに情報を格納する
     $('input').change(function() {
-        // test
-        var test_data = $.cookie("test");
-        console.log("test---------------");
-        console.log(test_data);
         if ($("#settingcookie").prop("checked") == true) {
             cookie_all_set();
         } else {
@@ -83,42 +73,20 @@ $(function() {
 
         $(csv).each(function(i) {
             cookie_set(this[0].toString());
-        });
-        console.log("test2---------------");
-        test_data = $.cookie("test");
-        console.log(test_data);      
+        });    
     }
     function cookie_set(str){
+        var array_data = new Object();
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             if ($('#' + key).prop("checked") == true) {
-                $.cookie(key, yes, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
-                if(key == "aetheryte-mist-start"){
-                    console.log("aetheryte-mist-start---------set");
-                    console.log(key);
-                    console.log(yes);
-                    console.log($.cookie(key));
-                    $.cookie("test", yes);
-                    test_data = $.cookie("test");
-                    console.log(test_data);        
-                    console.log($.cookie(key));
-                }
+                array_data[key] = yes;
             } else {
-                $.cookie(key, no, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
-                if(key == "aetheryte-mist-start"){
-                    console.log("aetheryte-mist-start---------set");
-                    console.log(key);
-                    console.log(no);
-                    console.log($.cookie(key));
-                }
+                array_data[key] = no;
             }
-            console.log("test4---------------");
-            test_data = $.cookie("test");
-            console.log(test_data);    
         });
-        console.log("test3---------------");
-        test_data = $.cookie("test");
-        console.log(test_data);    
+        var jsondata = JSON.stringify(array_data);
+        $.cookie("jsondata", jsondata, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
     }    
 
     // クッキーに情報を格納しないチェックのときには、情報を全削除する
@@ -139,8 +107,6 @@ $(function() {
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             $.removeCookie(key);
-            console.log("delete-----------");
-            console.log(key);
         });
     }
 

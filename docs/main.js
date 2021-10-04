@@ -1,15 +1,15 @@
 $(function() {
+
+    
     function parseCsv(data) {
         var csv = $.csv.toArrays(data);
-  
-        var insert = '';
+
+        //一行目は見出しなので削除
+        csv.shift();
+
         $(csv).each(function(i) {
             console.log("------");
-            if (this.length > 0) {
-                $(this).each(function() {
-                    console.log(this);
-                });
-            }
+            console.log(this[0].toString());
         });
     }
     $.get('aetheryte_id_list.csv', parseCsv, 'text');

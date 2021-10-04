@@ -84,6 +84,9 @@ $(function() {
         $(csv).each(function(i) {
             cookie_set(this[0].toString());
         });
+        console.log("test2---------------");
+        test_data = $.cookie("test");
+        console.log(test_data);      
     }
     function cookie_set(str){
         $.each(id_suffix, function(_, value) {

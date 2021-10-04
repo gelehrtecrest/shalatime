@@ -41,6 +41,8 @@ $(function() {
             console.log("aetheryte-mist-start---------get");
             console.log(key);
             console.log(cookie_data);
+            test_data = $.cookie("test");
+            console.log(test_data);
         }
 
         // クッキー読み込むタイミングで、undefinedになったら処理をとばす
@@ -89,6 +91,7 @@ $(function() {
                     console.log(key);
                     console.log(yes);
                     console.log($.cookie(key));
+                    $.cookie("test", yes, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
                 }
             } else {
                 $.cookie(key, no, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});

@@ -23,6 +23,7 @@ $(function() {
 
         var jsondata = $.cookie("jsondata");
         get_data = JSON.parse(jsondata);
+        console.log(get_data);
         $(csv).each(function(i) {
             cookie_get(this[0].toString());
         });

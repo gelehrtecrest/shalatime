@@ -1,4 +1,4 @@
-var id_suffix = [
+let id_suffix = [
     '-start',
     '-end',
     '-pass',
@@ -6,6 +6,8 @@ var id_suffix = [
     '-half',
     '-homepoint',
 ];
+let yes = "YES";
+let no = "NO";
 
 $(function() {
 
@@ -46,7 +48,7 @@ $(function() {
             return;
         }
 
-        if(data >= 1){
+        if(data == yes){
             $('#' + key).prop("checked", true);
         } else {
             $('#' + key).prop("checked", false);
@@ -81,14 +83,14 @@ $(function() {
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             if ($('#' + key).prop("checked") == true) {
-                $.cookie(key, 1, { expires: 30 });
+                $.cookie(key, yes, { expires: 30 });
                 if(key == "aetheryte-mist-start"){
                     console.log("aetheryte-mist-start---------set");
                     console.log(key);
                     console.log(1);
                 }
             } else {
-                $.cookie(key, -1, { expires: 30 });
+                $.cookie(key, no, { expires: 30 });
                 if(key == "aetheryte-mist-start"){
                     console.log("aetheryte-mist-start---------set");
                     console.log(key);

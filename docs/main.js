@@ -112,7 +112,7 @@ $(function() {
                 }
             }
         });
-        console.log("test2---------------");
+        console.log("test3---------------");
         test_data = $.cookie("test");
         console.log(test_data);    
     }    

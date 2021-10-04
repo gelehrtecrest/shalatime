@@ -86,12 +86,11 @@ $(function() {
         });
         console.log("test2---------------");
         test_data = $.cookie("test");
-        console.log(test_data);      
+        console.log(test_data);
     }
     function cookie_set(str){
         for (let i = 0; i < id_suffix.length; ++i) {
-        //$.each(id_suffix, function(_, value) {
-            var value = id_suffix[i];
+        $.each(id_suffix, function(_, value) {
             var key = str + value;
             if ($('#' + key).prop("checked") == true) {
                 $.cookie(key, yes, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
@@ -113,8 +112,10 @@ $(function() {
                     console.log($.cookie(key));
                 }
             }
-        //});
-        }
+        });
+        console.log("test3---------------");
+        test_data = $.cookie("test");
+        console.log(test_data);
     }    
 
     // クッキーに情報を格納しないチェックのときには、情報を全削除する

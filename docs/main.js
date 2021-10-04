@@ -111,6 +111,9 @@ $(function() {
                     console.log($.cookie(key));
                 }
             }
+            console.log("test4---------------");
+            test_data = $.cookie("test");
+            console.log(test_data);    
         });
         console.log("test3---------------");
         test_data = $.cookie("test");

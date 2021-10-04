@@ -83,7 +83,7 @@ $(function() {
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             if ($('#' + key).prop("checked") == true) {
-                $.cookie(key, yes, { expires: 30 });
+                $.cookie(key, yes, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
                 if(key == "aetheryte-mist-start"){
                     console.log("aetheryte-mist-start---------set");
                     console.log(key);
@@ -91,7 +91,7 @@ $(function() {
                     console.log($.cookie(key));
                 }
             } else {
-                $.cookie(key, no, { expires: 30 });
+                $.cookie(key, no, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
                 if(key == "aetheryte-mist-start"){
                     console.log("aetheryte-mist-start---------set");
                     console.log(key);

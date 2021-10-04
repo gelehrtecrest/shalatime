@@ -87,14 +87,16 @@ $(function() {
                 if(key == "aetheryte-mist-start"){
                     console.log("aetheryte-mist-start---------set");
                     console.log(key);
-                    console.log(1);
+                    console.log(yes);
+                    console.log($.cookie(key));
                 }
             } else {
                 $.cookie(key, no, { expires: 30 });
                 if(key == "aetheryte-mist-start"){
                     console.log("aetheryte-mist-start---------set");
                     console.log(key);
-                    console.log(-1);
+                    console.log(no);
+                    console.log($.cookie(key));
                 }
             }
         });

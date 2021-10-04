@@ -35,10 +35,12 @@ $(function() {
 
     // 取得したデータからinputに反映
     function set_value(key, data){
+        console.log(key);
+        console.log(data);
         if(data >= 1){
-            $(key).prop("checked", true);
+            $('#' + key).prop("checked", true);
         } else {
-            $(key).prop("checked", false);
+            $('#' + key).prop("checked", false);
         }
     }
 

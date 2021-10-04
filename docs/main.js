@@ -80,7 +80,9 @@ $(function() {
         });
         var jsondata = JSON.stringify(set_data);
         console.log(jsondata);
-        $.cookie("jsondata", jsondata, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
+        $.cookie("jsondata", jsondata, {expires:7});
+        console.log("------------------------------------");
+        console.log($.cookie("jsondata"));
     }
     function cookie_set(num, str){
         

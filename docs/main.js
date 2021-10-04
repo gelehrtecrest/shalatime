@@ -78,6 +78,7 @@ $(function() {
             cookie_set(this[0].toString());
         });
         var jsondata = JSON.stringify(set_data);
+        console.log(jsondata);
         $.cookie("jsondata", jsondata, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});
     }
     function cookie_set(str){

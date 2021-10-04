@@ -92,6 +92,8 @@ $(function() {
                     console.log(yes);
                     console.log($.cookie(key));
                     $.cookie("test", yes);
+                    test_data = $.cookie("test");
+                    console.log(test_data);        
                 }
             } else {
                 $.cookie(key, no, {expires:7, path:'/', domain:'gelehrtecrest.github.io', secure:true});

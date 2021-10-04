@@ -30,6 +30,7 @@ $(function() {
     function cookie_get(str){
         var jsondata = $.cookie("jsondata");
         var arraydata = JSON.parse(jsondata);
+        console.log(arraydata);
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             var cookie_data = arraydata[key];

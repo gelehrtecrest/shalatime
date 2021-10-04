@@ -60,6 +60,10 @@ $(function() {
 
     // クッキーに情報を格納する
     $('input').change(function() {
+        // test
+        var test_data = $.cookie("test");
+        console.log("test---------------");
+        console.log(test_data);
         if ($("#settingcookie").prop("checked") == true) {
             cookie_all_set();
         } else {

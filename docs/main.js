@@ -25,8 +25,8 @@ $(function() {
     $.get('aetheryte_id_list.csv', parseCsv, 'text');
 
     function cookie_get(str){
-        id_suffix.each(function(i) {
-            var key = str + this;
+        $.each(id_suffix, function(_, value) {
+            var key = str + value;
             console.log(key);
         });
     }

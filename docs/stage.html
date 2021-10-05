@@ -28,7 +28,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="alert alert-success">出発・到着・通過するエーテライトにチェックを入れてください</div>
+			<div class="alert alert-success">Step1. 出発・到着・通過するエーテライトにチェックを入れてください。</div>
 			<ul class="nav nav-tabs">
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">居住区</a>
@@ -717,11 +717,39 @@
 				</div>
 			</div>
 		</div>
-
+		<div class="container">
+			<div class="alert alert-success">Step2. 計算ボタンを押してください。</div>
+			<button type="button" class="btn btn-success">計算</button>
+			<div class="form-group">
+				<label for="text1">想定されるルート数の合計</label>
+				<input type="text" id="routeallnum" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="text1">現在計算したルート数</label>
+				<input type="text" id="routenum" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="text1">確認しているルート</label>
+				<input type="text" id="checkroute" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="text1">現在計算済みの最安ルート</label>
+				<input type="text" id="goodroute" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="text1">必要なギル</label>
+				<input type="text" id="telepogil" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="text1">結果：最安ルート</label>
+				<input type="text" id="bestroute" class="form-control">
+			</div>
+		</div>
+		<hr />
 		<!-- お気に入りテレポ -->
 		<div class="container">
-			<div class="alert alert-success">お気に入りテレポなどの無料・半額テレポ先、デジョン先を設定できます。</div>
-			<div class="alert alert-success">グランドカンパニーへの転送券も、無料テレポ先として設定してください</div>
+			<div class="alert alert-info">お気に入りテレポなどの無料・半額テレポ先、デジョン先を設定できます。</div>
+			<div class="alert alert-info">グランドカンパニーへの転送券も、無料テレポ先として設定してください。</div>
 			<a class="btn btn-primary" data-toggle="collapse" href="#collapseSetting" role="button" aria-expanded="false" aria-controls="collapseSetting">
 				設定を開けます
 			</a>

@@ -55,7 +55,7 @@ $(function() {
 
     // localStorageに情報を格納する
     $('input').change(function() {
-        if ($("#settinglocal_storage").prop("checked") == true) {
+        if ($("#setting_local_storage").prop("checked") == true) {
             local_storage_all_set();
         } else {
             local_storage_all_delete();

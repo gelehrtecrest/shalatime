@@ -31,9 +31,6 @@ $(function() {
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             var local_storage_data = localStorage.getItem(key);
-            console.log("get-------------------------");
-            console.log(key);
-            console.log(local_storage_data);
             set_value(key, local_storage_data);
         });
     }
@@ -86,8 +83,6 @@ $(function() {
                 localStorage.setItem(key, no);
             }
 
-            console.log("set-------------------------");
-            console.log(key);
             var local_storage_data = localStorage.getItem(key);
             console.log(local_storage_data);
         });

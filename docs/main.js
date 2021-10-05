@@ -55,7 +55,9 @@ $(function() {
         if ($("#setting_local_storage").prop("checked") == true) {
             local_storage_all_set();
         } else {
-            local_storage_all_delete();
+            console.log("clear-------------");
+            localStorage.clear();
+            //local_storage_all_delete();
         }
     });
 

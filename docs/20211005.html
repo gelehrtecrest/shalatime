@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html>
+	<head lang="ja">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta description="FINAL FANTASY XIVでテレポする料金を計算します。">
+		<title>シャーレタイム</title>
+		<script src="jquery-3.6.0.min.js"></script>
+		<!-- <script src="jquery.cookie.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> -->
+		<script src="jquery.csv.min.js"></script>
+		<!-- 自作スクリプト -->
+		<script src="main.js"></script>
+		<script src="popper.min.js"></script>
+		<script src="bootstrap.min.js"></script>
+		<link href="bootstrap.min.css" rel="stylesheet">
+		<link href="main.css?20210517" rel="stylesheet">
+		<!-- ダークモード -->
+		<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+		<link href="style.css?20210818" rel="stylesheet">
+	</head>
+	<body>
+		<div class="jumbotron">
+			<div class="container">
+				<h1>シャーレタイム</h1>
+				<p id="comment">FF14で各地をテレポ・デジョンする時に、料金の安いルートを検索します。</p>
+			</div>
+		</div>
+		<div class="container">
+			<div class="alert alert-success">出発・到着・通過するエーテライトにチェックを入れてください</div>
+			<ul class="nav nav-tabs">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">居住区</a>
+					<div class="dropdown-menu">
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#myhouse" role="tab" aria-controls="profile" aria-selected="false">FC/マイハウス</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#friend" role="tab" aria-controls="profile" aria-selected="false">フレンドテレポ</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">エオルゼア</a>
+					<div class="dropdown-menu">
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#lanoscea" role="tab" aria-controls="profile" aria-selected="false">ラノシア</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#blackshroud" role="tab" aria-controls="profile" aria-selected="false">黒衣森</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#thanalan" role="tab" aria-controls="profile" aria-selected="false">ザナラーン</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#coerthas" role="tab" aria-controls="profile" aria-selected="false">クルザス</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#abalathia" role="tab" aria-controls="profile" aria-selected="false">アバラシア</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#dravania" role="tab" aria-controls="profile" aria-selected="false">ドラヴァニア</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#gyrabania" role="tab" aria-controls="profile" aria-selected="false">ギラバニア</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#mordhona" role="tab" aria-controls="profile" aria-selected="false">モードゥナ</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">東方諸国</a>
+					<div class="dropdown-menu">
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#hingashi" role="tab" aria-controls="profile" aria-selected="false">ひんがしの国</a>
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#othard" role="tab" aria-controls="profile" aria-selected="false">オサード</a>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">第一世界</a>
+					<div class="dropdown-menu">
+						<a class="nav-link" id="profile-tab" data-toggle="tab" href="#norvrandt" role="tab" aria-controls="profile" aria-selected="false">ノルヴラント</a>
+					</div>
+				</li>
+			</ul>
+			<div class="tab-content container">
+				<div class="tab-pane fade show active" id="myhouse">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-mist-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-mist-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-mist-pass"></td>
+								<td id="aetheryte-mist">ミスト・ヴィレッジ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-gob-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-gob-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-gob-pass"></td>
+								<td id="aetheryte-gob">ゴブレットビュート</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-lave-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-lave-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-lave-pass"></td>
+								<td id="aetheryte-lave">ラベンダーベッド</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-shirogane-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-shirogane-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-shirogane-pass"></td>
+								<td id="aetheryte-shirogane">シロガネ</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="friend">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="friend-mist-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="friend-mist-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="friend-mist-pass"></td>
+								<td id="friend-mist">ミスト・ヴィレッジ（フレンドテレポ）</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="friend-gob-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="friend-gob-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="friend-gob-pass"></td>
+								<td id="friend-gob">ゴブレットビュート（フレンドテレポ）</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="friend-lave-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="friend-lave-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="friend-lave-pass"></td>
+								<td id="friend-lave">ラベンダーベッド（フレンドテレポ）</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="friend-shirogane-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="friend-shirogane-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="friend-shirogane-pass"></td>
+								<td id="friend-shirogane">シロガネ（フレンドテレポ）</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="lanoscea">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-limsa-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-limsa-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-limsa-pass"></td>
+								<td id="aetheryte-limsa">リムサ・ロミンサ：下甲板層</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-summer-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-summer-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-summer-pass"></td>
+								<td id="aetheryte-summer">サマーフォード庄</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-moraby-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-moraby-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-moraby-pass"></td>
+								<td id="aetheryte-moraby">モラビー造船廠</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-costa-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-costa-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-costa-pass"></td>
+								<td id="aetheryte-costa">コスタ・デル・ソル</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-wine-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-wine-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-wine-pass"></td>
+								<td id="aetheryte-wine">ワインポート</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-swift-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-swift-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-swift-pass"></td>
+								<td id="aetheryte-swift">スウィフトパーチ植民地</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-ale-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-ale-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-ale-pass"></td>
+								<td id="aetheryte-ale">エールポート</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-bronze-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-bronze-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-bronze-pass"></td>
+								<td id="aetheryte-bronze">キャンプ・ブロンズレイク</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-overlook-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-overlook-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-overlook-pass"></td>
+								<td id="aetheryte-overlook">キャンプ・オーバールック</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-wolves-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-wolves-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-wolves-pass"></td>
+								<td id="aetheryte-wolves">ウルヴズジェイル係船場</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="blackshroud">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-gridania-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-gridania-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-gridania-pass"></td>
+								<td id="aetheryte-gridania">グリダニア：新市街</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-bent-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-bent-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-bent-pass"></td>
+								<td id="aetheryte-bent">ベントブランチ牧場</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-hawthorne-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-hawthorne-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-hawthorne-pass"></td>
+								<td id="aetheryte-hawthorne">ホウソーン家の山塞</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-quarry-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-quarry-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-quarry-pass"></td>
+								<td id="aetheryte-quarry">クォーリーミル</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-tranquil-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-tranquil-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-tranquil-pass"></td>
+								<td id="aetheryte-tranquil">キャンプ・トランキル</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-fallgourd-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-fallgourd-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-fallgourd-pass"></td>
+								<td id="aetheryte-fallgourd">フォールゴウド</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="thanalan">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-uldah-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-uldah-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-uldah-pass"></td>
+								<td id="aetheryte-uldah">ウルダハ：ナル回廊</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-horizon-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-horizon-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-horizon-pass"></td>
+								<td id="aetheryte-horizon">ホライズン</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-black-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-black-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-black-pass"></td>
+								<td id="aetheryte-black">ブラックブラッシュ停留所</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-drybone-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-drybone-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-drybone-pass"></td>
+								<td id="aetheryte-drybone">キャンプ・ドライボーン</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-littlealamhigo-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-littlealamhigo-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-littlealamhigo-pass"></td>
+								<td id="aetheryte-littlealamhigo">リトルアラミゴ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-forgotten-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-forgotten-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-forgotten-pass"></td>
+								<td id="aetheryte-forgotten">忘れられたオアシス</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-bluefog-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-bluefog-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-bluefog-pass"></td>
+								<td id="aetheryte-bluefog">キャンプ・ブルーフォグ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-ceruleum-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-ceruleum-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-ceruleum-pass"></td>
+								<td id="aetheryte-ceruleum">青燐生成所</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-goldsaucer-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-goldsaucer-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-goldsaucer-pass"></td>
+								<td id="aetheryte-goldsaucer">ゴールドソーサー</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="coerthas">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-ishgard-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-ishgard-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-ishgard-pass"></td>
+								<td id="aetheryte-ishgard">イシュガルド：下層</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-dragonhead-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-dragonhead-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-dragonhead-pass"></td>
+								<td id="aetheryte-dragonhead">キャンプ・ドラゴンヘッド</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-falcon-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-falcon-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-falcon-pass"></td>
+								<td id="aetheryte-falcon">ファルコンネスト</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="abalathia">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-cloudtop-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-cloudtop-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-cloudtop-pass"></td>
+								<td id="aetheryte-cloudtop">キャンプ・クラウドトップ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-okzundu-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-okzundu-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-okzundu-pass"></td>
+								<td id="aetheryte-okzundu">オク・ズンド</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-helix-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-helix-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-helix-pass"></td>
+								<td id="aetheryte-helix">ポート・ヘリックス</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="dravania">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-idyll-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-idyll-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-idyll-pass"></td>
+								<td id="aetheryte-idyll">イディルシャイア</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-tail-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-tail-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-tail-pass"></td>
+								<td id="aetheryte-tail">テイルフェザー</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-anyx-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-anyx-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-anyx-pass"></td>
+								<td id="aetheryte-anyx">不浄の三塔</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-moghome-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-moghome-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-moghome-pass"></td>
+								<td id="aetheryte-moghome">モグモグホーム</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-zenith-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-zenith-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-zenith-pass"></td>
+								<td id="aetheryte-zenith">白亜の宮殿</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="gyrabania">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-rhalgr-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-rhalgr-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-rhalgr-pass"></td>
+								<td id="aetheryte-rhalgr">ラールガーズリーチ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-oriens-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-oriens-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-oriens-pass"></td>
+								<td id="aetheryte-oriens">カストルム・オリエンス</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-peering-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-peering-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-peering-pass"></td>
+								<td id="aetheryte-peering">ピーリングストーンズ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-alagannha-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-alagannha-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-alagannha-pass"></td>
+								<td id="aetheryte-alagannha">アラガーナ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-alaghiri-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-alaghiri-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-alaghiri-pass"></td>
+								<td id="aetheryte-alaghiri">アラギリ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-praetoria-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-praetoria-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-praetoria-pass"></td>
+								<td id="aetheryte-praetoria">ポルタ・プレトリア</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-alamhiganquarter-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-alamhiganquarter-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-alamhiganquarter-pass"></td>
+								<td id="aetheryte-alamhiganquarter">アラミガン・クォーター</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="hingashi">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-kugane-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-kugane-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-kugane-pass"></td>
+								<td id="aetheryte-">クガネ</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="othard">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-tamamizu-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-tamamizu-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-tamamizu-pass"></td>
+								<td id="aetheryte-tamamizu">碧のタマミズ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-onokoro-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-onokoro-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-onokoro-pass"></td>
+								<td id="aetheryte-onokoro">オノコロ島</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-namai-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-namai-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-namai-pass"></td>
+								<td id="aetheryte-namai">ナマイ村</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-fierce-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-fierce-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-fierce-pass"></td>
+								<td id="aetheryte-fierce">烈士庵</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-reunion-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-reunion-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-reunion-pass"></td>
+								<td id="aetheryte-reunion">再会の市</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-dawnthrone-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-dawnthrone-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-dawnthrone-pass"></td>
+								<td id="aetheryte-dawnthrone">明けの玉座</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-dhoroiloh-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-dhoroiloh-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-dhoroiloh-pass"></td>
+								<td id="aetheryte-dhoroiloh">ドーロ・イロー</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-domanenclave-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-domanenclave-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-domanenclave-pass"></td>
+								<td id="aetheryte-domanenclave">ドマ町人地</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="norvrandt">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-crystarium-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-crystarium-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-crystarium-pass"></td>
+								<td id="aetheryte-crystarium">クリスタリウム</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-eulmore-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-eulmore-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-eulmore-pass"></td>
+								<td id="aetheryte-eulmore">ユールモア</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-jobb-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-jobb-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-jobb-pass"></td>
+								<td id="aetheryte-jobb">ジョッブ砦</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-ostall-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-ostall-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-ostall-pass"></td>
+								<td id="aetheryte-ostall">オスタル厳命城</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-stilltide-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-stilltide-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-stilltide-pass"></td>
+								<td id="aetheryte-stilltide">スティルタイド</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-wright-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-wright-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-wright-pass"></td>
+								<td id="aetheryte-wright">ライト村</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-tomra-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-tomra-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-tomra-pass"></td>
+								<td id="aetheryte-tomra">トメラの村</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-mordsouq-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-mordsouq-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-mordsouq-pass"></td>
+								<td id="aetheryte-mordsouq">モルド・スーク</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-journey-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-journey-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-journey-pass"></td>
+								<td id="aetheryte-journey">旅立ちの宿</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-twine-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-twine-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-twine-pass"></td>
+								<td id="aetheryte-twine">トゥワイン</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-lydhalran-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-lydhalran-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-lydhalran-pass"></td>
+								<td id="aetheryte-lydhalran">リダ・ラーン</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-plaenni-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-plaenni-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-plaenni-pass"></td>
+								<td id="aetheryte-plaenni">プラ・エンニ茸窟</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-wolekdorf-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-wolekdorf-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-wolekdorf-pass"></td>
+								<td id="aetheryte-wolekdorf">ヴォレクドルフ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-slitherbough-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-slitherbough-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-slitherbough-pass"></td>
+								<td id="aetheryte-slitherbough">スリザーバウ</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-fanow-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-fanow-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-fanow-pass"></td>
+								<td id="aetheryte-fanow">ファノヴの里</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-ondo-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-ondo-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-ondo-pass"></td>
+								<td id="aetheryte-ondo">オンドの潮溜まり</td>
+							</tr>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-macarenses-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-macarenses-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-macarenses-pass"></td>
+								<td id="aetheryte-macarenses">マカレンサス広場</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade" id="mordhona">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">出発</th>
+								<th scope="col">到着</th>
+								<th scope="col">通過</th>
+								<th scope="col">エーテライト</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="radio" name="aetheryte-start" id="aetheryte-revenant-start"></td>
+								<td><input type="radio" name="aetheryte-end" id="aetheryte-revenant-end"></td>
+								<td><input class="" type="checkbox" name="aetheryte-pass" value="" id="aetheryte-revenant-pass"></td>
+								<td id="aetheryte-revenant">レヴナンツトール</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<!-- お気に入りテレポ -->
+		<div class="container">
+			<div class="alert alert-success">お気に入りテレポなどの無料・半額テレポ先、デジョン先を設定できます。</div>
+			<div class="alert alert-success">グランドカンパニーへの転送券も、無料テレポ先として設定してください</div>
+			<a class="btn btn-primary" data-toggle="collapse" href="#collapseSetting" role="button" aria-expanded="false" aria-controls="collapseSetting">
+				設定を開けます
+			</a>
+			<div class="collapse" id="collapseSetting">
+				<div class="form-check">
+					<input class="" type="checkbox" value="" id="setting_local_storage" checked>
+					<label class="form-check-label" for="flexCheckChecked">
+						設定を保存します
+					</label>
+				</div>
+				<ul class="nav nav-tabs">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">居住区</a>
+						<div class="dropdown-menu">
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#myhouse-setting" role="tab" aria-controls="profile" aria-selected="false">FC/マイハウス</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#friend-setting" role="tab" aria-controls="profile" aria-selected="false">フレンドテレポ</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">エオルゼア</a>
+						<div class="dropdown-menu">
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#lanoscea-setting" role="tab" aria-controls="profile" aria-selected="false">ラノシア</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#blackshroud-setting" role="tab" aria-controls="profile" aria-selected="false">黒衣森</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#thanalan-setting" role="tab" aria-controls="profile" aria-selected="false">ザナラーン</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#coerthas-setting" role="tab" aria-controls="profile" aria-selected="false">クルザス</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#abalathia-setting" role="tab" aria-controls="profile" aria-selected="false">アバラシア</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#dravania-setting" role="tab" aria-controls="profile" aria-selected="false">ドラヴァニア</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#gyrabania-setting" role="tab" aria-controls="profile" aria-selected="false">ギラバニア</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#mordhona-setting" role="tab" aria-controls="profile" aria-selected="false">モードゥナ</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">東方諸国</a>
+						<div class="dropdown-menu">
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#hingashi-setting" role="tab" aria-controls="profile" aria-selected="false">ひんがしの国</a>
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#othard-setting" role="tab" aria-controls="profile" aria-selected="false">オサード</a>
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">第一世界</a>
+						<div class="dropdown-menu">
+							<a class="nav-link" id="profile-tab" data-toggle="tab" href="#norvrandt-setting" role="tab" aria-controls="profile" aria-selected="false">ノルヴラント</a>
+						</div>
+					</li>
+				</ul>
+				<div class="tab-content container">
+					<div class="tab-pane fade show active" id="myhouse-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-mist-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-mist-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-mist-homepoint"></td>
+									<td id="aetheryte-mist">ミスト・ヴィレッジ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-gob-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-gob-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-gob-homepoint"></td>
+									<td id="aetheryte-gob">ゴブレットビュート</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-lave-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-lave-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-lave-homepoint"></td>
+									<td id="aetheryte-lave">ラベンダーベッド</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-shirogane-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-shirogane-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-shirogane-homepoint"></td>
+									<td id="aetheryte-shirogane">シロガネ</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="friend-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="friend-mist-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="friend-mist-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="friend--homepoint"></td>
+									<td id="friend-mist">ミスト・ヴィレッジ（フレンドテレポ）</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="friend-gob-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="friend-gob-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="friend-gob-homepoint"></td>
+									<td id="friend-gob">ゴブレットビュート（フレンドテレポ）</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="friend-lave-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="friend-lave-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="friend-lave-homepoint"></td>
+									<td id="friend-lave">ラベンダーベッド（フレンドテレポ）</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="friend-shirogane-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="friend-shirogane-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="friend-shirogane-homepoint"></td>
+									<td id="friend-shirogane">シロガネ（フレンドテレポ）</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="lanoscea-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-limsa-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-limsa-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-limsa-homepoint"></td>
+									<td id="aetheryte-limsa">リムサ・ロミンサ：下甲板層</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-summer-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-summer-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-summer-homepoint"></td>
+									<td id="aetheryte-summer">サマーフォード庄</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-moraby-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-moraby-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-moraby-homepoint"></td>
+									<td id="aetheryte-moraby">モラビー造船廠</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-costa-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-costa-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-costa-homepoint"></td>
+									<td id="aetheryte-costa">コスタ・デル・ソル</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-wine-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-wine-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-wine-homepoint"></td>
+									<td id="aetheryte-wine">ワインポート</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-swift-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-swift-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-swift-homepoint"></td>
+									<td id="aetheryte-swift">スウィフトパーチ植民地</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ale-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ale-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-ale-homepoint"></td>
+									<td id="aetheryte-ale">エールポート</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-bronze-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-bronze-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-bronze-homepoint"></td>
+									<td id="aetheryte-bronze">キャンプ・ブロンズレイク</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-overlook-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-overlook-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-overlook-homepoint"></td>
+									<td id="aetheryte-overlook">キャンプ・オーバールック</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-wolves-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-wolves-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-wolves-homepoint"></td>
+									<td id="aetheryte-wolves">ウルヴズジェイル係船場</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="blackshroud-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-gridania-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-gridania-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-gridania-homepoint"></td>
+									<td id="aetheryte-gridania">グリダニア：新市街</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-bent-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-bent-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-bent-homepoint"></td>
+									<td id="aetheryte-bent">ベントブランチ牧場</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-hawthorne-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-hawthorne-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-hawthorne-homepoint"></td>
+									<td id="aetheryte-hawthorne">ホウソーン家の山塞</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-quarry-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-quarry-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-quarry-homepoint"></td>
+									<td id="aetheryte-quarry">クォーリーミル</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-tranquil-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-tranquil-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-tranquil-homepoint"></td>
+									<td id="aetheryte-tranquil">キャンプ・トランキル</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-fallgourd-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-fallgourd-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-fallgourd-homepoint"></td>
+									<td id="aetheryte-fallgourd">フォールゴウド</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="thanalan-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-uldah-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-uldah-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-uldah-homepoint"></td>
+									<td id="aetheryte-uldah">ウルダハ：ナル回廊</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-horizon-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-horizon-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-horizon-homepoint"></td>
+									<td id="aetheryte-horizon">ホライズン</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-black-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-black-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-black-homepoint"></td>
+									<td id="aetheryte-black">ブラックブラッシュ停留所</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-drybone-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-drybone-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-drybone-homepoint"></td>
+									<td id="aetheryte-drybone">キャンプ・ドライボーン</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-littlealamhigo-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-littlealamhigo-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-littlealamhigo-homepoint"></td>
+									<td id="aetheryte-littlealamhigo">リトルアラミゴ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-forgotten-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-forgotten-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-forgotten-homepoint"></td>
+									<td id="aetheryte-forgotten">忘れられたオアシス</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-bluefog-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-bluefog-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-bluefog-homepoint"></td>
+									<td id="aetheryte-bluefog">キャンプ・ブルーフォグ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ceruleum-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ceruleum-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-ceruleum-homepoint"></td>
+									<td id="aetheryte-ceruleum">青燐生成所</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-goldsaucer-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-goldsaucer-half"></td>
+									<td><input type="radio" name="aetheryte-setting" id="aetheryte-goldsaucer-homepoint"></td>
+									<td id="aetheryte-goldsaucer">ゴールドソーサー</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="coerthas-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ishgard-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ishgard-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-ishgard-homepoint"></td>
+									<td id="aetheryte-ishgard">イシュガルド：下層</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-dragonhead-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-dragonhead-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-dragonhead-homepoint"></td>
+									<td id="aetheryte-dragonhead">キャンプ・ドラゴンヘッド</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-falcon-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-falcon-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-falcon-homepoint"></td>
+									<td id="aetheryte-falcon">ファルコンネスト</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="abalathia-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-cloudtop-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-cloudtop-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-cloudtop-homepoint"></td>
+									<td id="aetheryte-cloudtop">キャンプ・クラウドトップ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-okzundu-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-okzundu-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-okzundu-homepoint"></td>
+									<td id="aetheryte-okzundu">オク・ズンド</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-helix-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-helix-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-helix-homepoint"></td>
+									<td id="aetheryte-helix">ポート・ヘリックス</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="dravania-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-idyll-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-idyll-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-idyll-homepoint"></td>
+									<td id="aetheryte-idyll">イディルシャイア</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-tail-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-tail-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-tail-homepoint"></td>
+									<td id="aetheryte-tail">テイルフェザー</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-anyx-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-anyx-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-anyx-homepoint"></td>
+									<td id="aetheryte-anyx">不浄の三塔</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-moghome-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-moghome-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-moghome-homepoint"></td>
+									<td id="aetheryte-moghome">モグモグホーム</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-zenith-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-zenith-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-zenith-homepoint"></td>
+									<td id="aetheryte-zenith">白亜の宮殿</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="gyrabania-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-rhalgr-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-rhalgr-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-rhalgr-homepoint"></td>
+									<td id="aetheryte-rhalgr">ラールガーズリーチ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-oriens-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-oriens-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-oriens-homepoint"></td>
+									<td id="aetheryte-oriens">カストルム・オリエンス</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-peering-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-peering-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-peering-homepoint"></td>
+									<td id="aetheryte-peering">ピーリングストーンズ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-alagannha-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-alagannha-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-alagannha-homepoint"></td>
+									<td id="aetheryte-alagannha">アラガーナ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-alaghiri-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-alaghiri-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-alaghiri-homepoint"></td>
+									<td id="aetheryte-alaghiri">アラギリ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-praetoria-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-praetoria-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-praetoria-homepoint"></td>
+									<td id="aetheryte-praetoria">ポルタ・プレトリア</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-alamhiganquarter-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-alamhiganquarter-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-alamhiganquarter-homepoint"></td>
+									<td id="aetheryte-alamhiganquarter">アラミガン・クォーター</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="hingashi-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-kugane-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-kugane-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-kugane-homepoint"></td>
+									<td id="aetheryte-kugane">クガネ</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="othard-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-tamamizu-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-tamamizu-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-tamamizu-homepoint"></td>
+									<td id="aetheryte-tamamizu">碧のタマミズ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-onokoro-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-onokoro-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-onokoro-homepoint"></td>
+									<td id="aetheryte-onokoro">オノコロ島</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-namai-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-namai-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-namai-homepoint"></td>
+									<td id="aetheryte-namai">ナマイ村</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-fierce-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-fierce-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-fierce-homepoint"></td>
+									<td id="aetheryte-fierce">烈士庵</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-reunion-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-reunion-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-reunion-homepoint"></td>
+									<td id="aetheryte-reunion">再会の市</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-dawnthrone-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-dawnthrone-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-dawnthrone-homepoint"></td>
+									<td id="aetheryte-dawnthrone">明けの玉座</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-dhoroiloh-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-dhoroiloh-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-dhoroiloh-homepoint"></td>
+									<td id="aetheryte-dhoroiloh">ドーロ・イロー</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-domanenclave-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-domanenclave-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-domanenclave-homepoint"></td>
+									<td id="aetheryte-domanenclave">ドマ町人地</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="norvrandt-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-crystarium-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-crystarium-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-crystarium-homepoint"></td>
+									<td id="aetheryte-crystarium">クリスタリウム</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-eulmore-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-eulmore-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-eulmore-homepoint"></td>
+									<td id="aetheryte-eulmore">ユールモア</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-jobb-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-jobb-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-jobb-homepoint"></td>
+									<td id="aetheryte-jobb">ジョッブ砦</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ostall-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ostall-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-ostall-homepoint"></td>
+									<td id="aetheryte-ostall">オスタル厳命城</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-stilltide-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-stilltide-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-stilltide-homepoint"></td>
+									<td id="aetheryte-stilltide">スティルタイド</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-wright-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-wright-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-wright-homepoint"></td>
+									<td id="aetheryte-wright">ライト村</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-tomra-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-tomra-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-tomra-homepoint"></td>
+									<td id="aetheryte-tomra">トメラの村</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-mordsouq-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-mordsouq-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-mordsouq-homepoint"></td>
+									<td id="aetheryte-mordsouq">モルド・スーク</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-journey-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-journey-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-journey-homepoint"></td>
+									<td id="aetheryte-journey">旅立ちの宿</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-twine-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-twine-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-twine-homepoint"></td>
+									<td id="aetheryte-twine">トゥワイン</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-lydhalran-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-lydhalran-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-lydhalran-homepoint"></td>
+									<td id="aetheryte-lydhalran">リダ・ラーン</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-plaenni-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-plaenni-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-plaenni-homepoint"></td>
+									<td id="aetheryte-plaenni">プラ・エンニ茸窟</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-wolekdorf-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-wolekdorf-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-wolekdorf-homepoint"></td>
+									<td id="aetheryte-wolekdorf">ヴォレクドルフ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-slitherbough-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-slitherbough-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-slitherbough-homepoint"></td>
+									<td id="aetheryte-slitherbough">スリザーバウ</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-fanow-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-fanow-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-fanow-homepoint"></td>
+									<td id="aetheryte-fanow">ファノヴの里</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ondo-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-ondo-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-ondo-homepoint"></td>
+									<td id="aetheryte-ondo">オンドの潮溜まり</td>
+								</tr>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-macarenses-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-macarenses-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-macarenses-homepoint"></td>
+									<td id="aetheryte-macarenses">マカレンサス広場</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="mordhona-setting">
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">無料</th>
+									<th scope="col">半額</th>
+									<th scope="col">ホームポイント</th>
+									<th scope="col">エーテライト</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-revenant-free"></td>
+									<td><input class="" type="checkbox" name="aetheryte-setting" value="" id="aetheryte-revenant-half"></td>
+									<td><input type="radio" name="aetheryte-end" id="aetheryte-revenant-homepoint"></td>
+									<td id="aetheryte-revenant">レヴナンツトール</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 以上までがツール本体 -->
+		<br />
+
+		<div class="container">
+			<hr />
+			<p>広告</p>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9341622472626262"
+     crossorigin="anonymous"></script>
+<!-- シャーレタイム -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-9341622472626262"
+     data-ad-slot="9343298781"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+		<hr />
+		</div>
+		<br />
+
+		<div class="jumbotron">
+			<div class="container">
+				<h3>使い方</h3>
+				<ul>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+		<div class="jumbotron">
+			<div class="container">
+				<h3>謝辞</h3>
+				<ul>
+					<li>テレポ料金の計算・集計・テストを手伝っていただいたみなさま。ありがとうございます。</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="jumbotron">
+			<div class="container">
+				<h3>本ツールについて</h3>
+				<ul>
+					<li>本ツールはファイナルファンタジーXIVのテレポ・デジョンという移動手段のサポートを行います。</li>
+					<ul>
+						<li>記載されている会社名・製品名・システム名などは、各社の商標、または登録商標です。</li>
+					</ul>
+					<li>ソースコードは<a href="https://github.com/gelehrtecrest/shalatime" target="_blank">Github上</a>で公開しています。</li>
+					<li>本ツールのclone及び可変・再配布などはご自由に。</li>
+					<li>その他お問い合わせなどは <a href="https://twitter.com/gelehrte_crest" target="_blank">@gelehrte_crest</a>へレスもしくはDMお願いします。</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="jumbotron">
+			<div class="container">
+				<h3>更新履歴</h3>
+				<ul>
+					<li> 2021/09/27 サイト構築開始</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

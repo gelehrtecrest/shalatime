@@ -31,6 +31,9 @@ $(function() {
         $.each(id_suffix, function(_, value) {
             var key = str + value;
             var local_storage_data = localStorage.getItem(key);
+            console.log("get-------------------------");
+            console.log(key);
+            console.log(local_storage_data);
             set_value(key, local_storage_data);
         });
     }
@@ -70,19 +73,23 @@ $(function() {
         csv.shift();
         set_data = new Object();
         $(csv).each(function(i) {
-            local_storage_set(this[0].toString(), this[1].toString());
+            local_storage_set(this[1].toString());
         });
     }
-    function local_storage_set(num, str){
+    function local_storage_set(str){
         
         $.each(id_suffix, function(_, value) {
-            var num_key = num + value;
             var key = str + value;
             if ($('#' + key).prop("checked") == true) {
                 localStorage.setItem(key, yes);
             } else {
                 localStorage.setItem(key, no);
             }
+
+            console.log("set-------------------------");
+            console.log(key);
+            var local_storage_data = localStorage.getItem(key);
+            console.log(local_storage_data);
         });
         
     }    

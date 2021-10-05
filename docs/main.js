@@ -55,9 +55,7 @@ $(function() {
         if ($("#setting_local_storage").prop("checked") == true) {
             local_storage_all_set();
         } else {
-            console.log("clear-------------");
             localStorage.clear();
-            //local_storage_all_delete();
         }
     });
 
@@ -86,31 +84,7 @@ $(function() {
             }
 
             var local_storage_data = localStorage.getItem(key);
-            console.log(local_storage_data);
         });
         
-    }    
-
-    // localStorageに情報を格納しないチェックのときには、情報を全削除する
-    function local_storage_all_delete(){
-        $.get('aetheryte_id_list.csv', deleteparseCsv, 'text');
     }
-    function deleteparseCsv(data) {
-        var csv = $.csv.toArrays(data);
-
-        //一行目は見出しなので削除
-        csv.shift();
-
-        $(csv).each(function(i) {
-            local_storage_delete(this[0].toString());
-        });
-    }
-    function local_storage_delete(str){
-        $.each(id_suffix, function(_, value) {
-            var key = str + value;
-            localStorage.removeItem(key);
-        });
-    }
-
-
 });

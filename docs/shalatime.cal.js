@@ -35,7 +35,6 @@ $(function() {
                 // 1行目の配列の先頭要素は空白なので2列目から取得
                 if(i > 0){
                     // 特定の出発点での、到着点とテレポ代の連想配列
-                    travel_end_cost = {};
                     let end_id = end_id_list[i];
                     console.log(end_id);
                     console.log(travel_cost);

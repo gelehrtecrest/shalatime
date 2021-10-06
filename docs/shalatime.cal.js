@@ -169,6 +169,7 @@ $(function() {
         console.log("cal-----------------");
         console.log(cal_start);
         console.log(cal_end);
+        console.log(all_travel_cost_table);
         let start_cost = all_travel_cost_table[cal_start];
         console.log(start_cost);
         let cost = start_cost[cal_end];

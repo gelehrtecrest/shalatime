@@ -166,7 +166,12 @@ $(function() {
         // とりあえず、配列の最初と最後のコスト
         let cal_start = routearr[0];
         let cal_end = routearr[routearr.length - 1];
-        let cost = all_travel_cost_table[cal_start][cal_end];
+        console.log("cal-----------------");
+        console.log(cal_start);
+        console.log(cal_end);
+        let start_cost = all_travel_cost_table[cal_start];
+        console.log(start_cost);
+        let cost = start_cost[cal_end];
 
         return cost;
     }

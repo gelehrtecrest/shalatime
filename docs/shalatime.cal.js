@@ -29,6 +29,8 @@ $(function() {
             });
             all_travel_cost_table[start_id] = travel_end_cost;
         });
+
+        console.log(all_travel_cost_table);
     }
 
     // 計算ボタン

@@ -3,8 +3,32 @@ $(function() {
     // 2点間の値段を書いたcsvファイルをダウンロードします
     $.get('travel_cost_table.csv', parseTravelCostTableCsv, 'text');
     function parseTravelCostTableCsv(data) {
-        all_travel_cost_table = $.csv.toArrays(data);
-        console.log(all_travel_cost_table);
+        // 初期化
+        all_travel_cost_table = {};
+
+        let all_travel_cost_csv = $.csv.toArrays(data);
+        let end_id_list = all_travel_cost_csv[0];
+        // 1行目の配列の先頭要素は空白なので削除
+        end_id_list.shift();
+
+        // 1行目の配列を削除
+        all_travel_cost_csv.shift();
+
+        // 2行目から出発点とテレポ代を取得する
+        all_travel_cost_csv.forEach(function(start_travel_cost){
+            // 1列目は出発点のid
+            let start_id = start_travel_cost[0];
+            // 2列目以降はテレポ代
+            let num = 0;
+            let travel_end_cost = {};
+            start_travel_cost.forEach(function(travel_cost){
+                // 特定の出発点での、到着点とテレポ代の連想配列
+                travel_end_cost = {};
+                travel_end_cost[end_id_list[num]] = travel_cost;
+                num++;
+            });
+            all_travel_cost_table[start_id] = travel_end_cost;
+        });
     }
 
     // 計算ボタン
@@ -84,14 +108,12 @@ $(function() {
 
     // 出発点の取得
     function getStartPoint(){
-        // 未実装　とりあえずリムサのidを返す
-        return "aetheryte-limsa";
+        return $('input[name=aetheryte-start]:checked').attr('id');
     }
 
     // 到着点の取得
     function getEndPoint(){
-        // 未実装　とりあえずグリダニアのidを返す
-        return "aetheryte-gridania";
+        return $('input[name=aetheryte-end]:checked').attr('id');
     }
     
     // 入力から最適なルートを計算する
@@ -139,7 +161,11 @@ $(function() {
 
     // ルートのidリストから、値段を計算する
     function calOrGetRouteCost(routearr){
-        // 未実装　とりあえず0ギルとする
-        return 0;
+        // とりあえず、配列の最初と最後のコスト
+        let cal_start = routearr[0];
+        let cal_end = routearr[routearr.length - 1];
+        let cost = all_travel_cost_table[cal_start][cal_end];
+
+        return cost;
     }
 });

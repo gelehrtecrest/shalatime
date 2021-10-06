@@ -1,4 +1,4 @@
-let id_suffix = [
+const id_suffix = [
     '-start',
     '-end',
     '-pass',
@@ -6,8 +6,8 @@ let id_suffix = [
     '-half',
     '-homepoint',
 ];
-let yes = "YES";
-let no = "NO";
+const yes = "YES";
+const no = "NO";
 
 $(function() {
 
@@ -15,7 +15,7 @@ $(function() {
     // CSVファイルからidを取得
 
     function parseCsv(data) {
-        var csv = $.csv.toArrays(data);
+        let csv = $.csv.toArrays(data);
 
         //一行目は見出しなので削除
         csv.shift();
@@ -29,8 +29,8 @@ $(function() {
     // localStorageからデータ取得
     function local_storage_get(str){
         $.each(id_suffix, function(_, value) {
-            var key = str + value;
-            var local_storage_data = localStorage.getItem(key);
+            let key = str + value;
+            let local_storage_data = localStorage.getItem(key);
             set_value(key, local_storage_data);
         });
     }
@@ -64,7 +64,7 @@ $(function() {
         $.get('aetheryte_id_list.csv', setparseCsv, 'text');
     }
     function setparseCsv(data) {
-        var csv = $.csv.toArrays(data);
+        let csv = $.csv.toArrays(data);
 
         //一行目は見出しなので削除
         csv.shift();
@@ -82,8 +82,6 @@ $(function() {
             } else {
                 localStorage.setItem(key, no);
             }
-
-            var local_storage_data = localStorage.getItem(key);
         });
         
     }

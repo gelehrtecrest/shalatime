@@ -199,7 +199,7 @@ $(function() {
         id_suffix.forEach(function(suffix){
             console.log(suffix);
             str = str.replace(suffix, '');
-            console.log(output);
+            console.log(str);
         });
         return str;
     }

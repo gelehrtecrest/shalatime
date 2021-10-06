@@ -195,9 +195,10 @@ $(function() {
 
     // 接尾リストにあればreplaceで空白に書き換える
     function delete_suffix(str){
+        let output;
         id_suffix.forEach(function(suffix){
-            str.replace(suffix, '');
+            output = str.replace(suffix, '');
         });
-        return str;
+        return output;
     }
 });

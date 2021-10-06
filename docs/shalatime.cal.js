@@ -196,8 +196,11 @@ $(function() {
     // 接尾リストにあればreplaceで空白に書き換える
     function delete_suffix(str){
         let output;
+        console.log(str);
         id_suffix.forEach(function(suffix){
+            console.log(suffix);
             output = str.replace(suffix, '');
+            console.log(output);
         });
         return output;
     }

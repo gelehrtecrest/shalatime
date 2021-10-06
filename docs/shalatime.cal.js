@@ -1,3 +1,4 @@
+/*
 const id_suffix = [
     '-start',
     '-end',
@@ -6,6 +7,7 @@ const id_suffix = [
     '-half',
     '-homepoint',
 ];
+*/
 $(function() {
     var all_travel_cost_table;
     // 2点間の値段を書いたcsvファイルをダウンロードします

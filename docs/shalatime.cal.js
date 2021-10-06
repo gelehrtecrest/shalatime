@@ -17,7 +17,6 @@ $(function() {
         all_travel_cost_table = {};
 
         let all_travel_cost_csv = $.csv.toArrays(data);
-        console.log(all_travel_cost_csv);
         let end_id_list = all_travel_cost_csv[0];
 
         // 1行目の配列を削除
@@ -36,16 +35,11 @@ $(function() {
                 if(i > 0){
                     // 特定の出発点での、到着点とテレポ代の連想配列
                     let end_id = end_id_list[i];
-                    console.log(end_id);
-                    console.log(travel_cost);
                     travel_end_cost[end_id] = travel_cost;
                 }
             }
-            console.log(travel_end_cost);
             all_travel_cost_table[start_id] = travel_end_cost;
         });
-
-        console.log(all_travel_cost_table);
     }
 
     // 計算ボタン
@@ -170,9 +164,6 @@ $(function() {
             str = str + point + " ";
         });
 
-        // 未実装なので、リムサからグリダニアのルートだけ返すようになっている旨を記載
-        str = "未実装なのでリムサからグリダニアのルートだけ表示しています " + str;
-
         return str;
     }
 
@@ -181,12 +172,7 @@ $(function() {
         // とりあえず、配列の最初と最後のコスト
         let cal_start = delete_suffix(routearr[0]);
         let cal_end = delete_suffix(routearr[routearr.length - 1]);
-        console.log("cal-----------------");
-        console.log(cal_start);
-        console.log(cal_end);
-        console.log(all_travel_cost_table);
         let start_cost = all_travel_cost_table[cal_start];
-        console.log(start_cost);
         let cost = start_cost[cal_end];
 
         return cost;
@@ -194,11 +180,8 @@ $(function() {
 
     // 接尾リストにあればreplaceで空白に書き換える
     function delete_suffix(str){
-        console.log(str);
         id_suffix.forEach(function(suffix){
-            console.log(suffix);
             str = str.replace(suffix, '');
-            console.log(str);
         });
         return str;
     }

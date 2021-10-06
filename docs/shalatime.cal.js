@@ -28,6 +28,7 @@ $(function() {
                     travel_end_cost = {};
                     let end_id = end_id_list[num];
                     console.log(end_id);
+                    console.log(travel_cost);
                     travel_end_cost[end_id] = travel_cost;
                 }
                 num++;

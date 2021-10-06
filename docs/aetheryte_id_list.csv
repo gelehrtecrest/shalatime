@@ -1,4 +1,4 @@
-num,id,Japanese,English
+id,id_str,Japanese,English
 1,aetheryte-mist,ミスト・ヴィレッジ,Mist
 2,aetheryte-gob,ゴブレットビュート,The Goblet
 3,aetheryte-lave,ラベンダーベッド,The Lavender Beds
@@ -45,46 +45,47 @@ num,id,Japanese,English
 44,aetheryte-helix,ポート・ヘリックス,Helix
 45,dravania,ドラヴァニア,Dravania
 46,aetheryte-idyll,イディルシャイア,Idyllshire
-47,aetheryte-tail,テイルフェザー,Tailfeather
-48,aetheryte-anyx,不浄の三塔,Anyx Trine
-49,aetheryte-moghome,モグモグホーム,Moghome
-50,aetheryte-zenith,白亜の宮殿,Zenith
-51,gyrabania,ギラバニア,Gyr Abania
-52,aetheryte-rhalgr,ラールガーズリーチ,Rhalgr's Reach
-53,aetheryte-oriens,カストルム・オリエンス,Castrum Oriens
-54,aetheryte-peering,ピーリングストーンズ,The Peering Stones
-55,aetheryte-alagannha,アラガーナ,Ala Gannha
-56,aetheryte-alaghiri,アラギリ,Ala Ghiri
-57,aetheryte-praetoria,ポルタ・プレトリア,Porta Praetoria
-58,aetheryte-alamhiganquarter,アラミガン・クォーター,The Ala Mhigan Quarter
-59,hingashi,ひんがしの国,Hingashi
-60,aetheryte-kugane,クガネ,Kugane
-61,othard,オサード,Othard
-62,aetheryte-tamamizu,碧のタマミズ,Tamamizu
-63,aetheryte-onokoro,オノコロ島,Onokoro
-64,aetheryte-namai,ナマイ村,Namai
-65,aetheryte-fierce,烈士庵,The House of the Fierce
-66,aetheryte-reunion,再会の市,Reunion
-67,aetheryte-dawnthrone,明けの玉座,The Dawn Throne
-68,aetheryte-dhoroiloh,ドーロ・イロー,Dhoro Iloh
-69,aetheryte-domanenclave,ドマ町人地,The Doman Enclave
-70,norvrandt,ノルヴラント,Norvrandt
-71,aetheryte-crystarium,クリスタリウム,Crystarium
-72,aetheryte-eulmore,ユールモア,Eulmore
-73,aetheryte-jobb,ジョッブ砦,Fort Jobb
-74,aetheryte-ostall,オスタル厳命城,The Ostall Imperative
-75,aetheryte-stilltide,スティルタイド,Stilltide
-76,aetheryte-wright,ライト村,Wright
-77,aetheryte-tomra,トメラの村,Tomra
-78,aetheryte-mordsouq,モルド・スーク,Mord Souq
-79,aetheryte-journey,旅立ちの宿,The Inn at Journey's Head
-80,aetheryte-twine,トゥワイン,Twine
-81,aetheryte-lydhalran,リダ・ラーン,Lydha Lran
-82,aetheryte-plaenni,プラ・エンニ茸窟,Pla Enni
-83,aetheryte-wolekdorf,ヴォレクドルフ,Wolekdorf
-84,aetheryte-slitherbough,スリザーバウ,Slitherbough
-85,aetheryte-fanow,ファノヴの里,Fanow
-86,aetheryte-ondo,オンドの潮溜まり,The Ondo Cups
-87,aetheryte-macarenses,マカレンサス広場,The Macarenses Angle
-88,mordhona,モードゥナ,Mor Dhona
-89,aetheryte-revenant,レヴナンツトール,Revenant's Toll
+47,dravania-hinter,低地ドラヴァニア,The Dravanian Hinterlands
+48,aetheryte-tail,テイルフェザー,Tailfeather
+49,aetheryte-anyx,不浄の三塔,Anyx Trine
+50,aetheryte-moghome,モグモグホーム,Moghome
+51,aetheryte-zenith,白亜の宮殿,Zenith
+52,gyrabania,ギラバニア,Gyr Abania
+53,aetheryte-rhalgr,ラールガーズリーチ,Rhalgr's Reach
+54,aetheryte-oriens,カストルム・オリエンス,Castrum Oriens
+55,aetheryte-peering,ピーリングストーンズ,The Peering Stones
+56,aetheryte-alagannha,アラガーナ,Ala Gannha
+57,aetheryte-alaghiri,アラギリ,Ala Ghiri
+58,aetheryte-praetoria,ポルタ・プレトリア,Porta Praetoria
+59,aetheryte-alamhiganquarter,アラミガン・クォーター,The Ala Mhigan Quarter
+60,hingashi,ひんがしの国,Hingashi
+61,aetheryte-kugane,クガネ,Kugane
+62,othard,オサード,Othard
+63,aetheryte-tamamizu,碧のタマミズ,Tamamizu
+64,aetheryte-onokoro,オノコロ島,Onokoro
+65,aetheryte-namai,ナマイ村,Namai
+66,aetheryte-fierce,烈士庵,The House of the Fierce
+67,aetheryte-reunion,再会の市,Reunion
+68,aetheryte-dawnthrone,明けの玉座,The Dawn Throne
+69,aetheryte-dhoroiloh,ドーロ・イロー,Dhoro Iloh
+70,aetheryte-domanenclave,ドマ町人地,The Doman Enclave
+71,norvrandt,ノルヴラント,Norvrandt
+72,aetheryte-crystarium,クリスタリウム,Crystarium
+73,aetheryte-eulmore,ユールモア,Eulmore
+74,aetheryte-jobb,ジョッブ砦,Fort Jobb
+75,aetheryte-ostall,オスタル厳命城,The Ostall Imperative
+76,aetheryte-stilltide,スティルタイド,Stilltide
+77,aetheryte-wright,ライト村,Wright
+78,aetheryte-tomra,トメラの村,Tomra
+79,aetheryte-mordsouq,モルド・スーク,Mord Souq
+80,aetheryte-journey,旅立ちの宿,The Inn at Journey's Head
+81,aetheryte-twine,トゥワイン,Twine
+82,aetheryte-lydhalran,リダ・ラーン,Lydha Lran
+83,aetheryte-plaenni,プラ・エンニ茸窟,Pla Enni
+84,aetheryte-wolekdorf,ヴォレクドルフ,Wolekdorf
+85,aetheryte-slitherbough,スリザーバウ,Slitherbough
+86,aetheryte-fanow,ファノヴの里,Fanow
+87,aetheryte-ondo,オンドの潮溜まり,The Ondo Cups
+88,aetheryte-macarenses,マカレンサス広場,The Macarenses Angle
+89,mordhona,モードゥナ,Mor Dhona
+90,aetheryte-revenant,レヴナンツトール,Revenant's Toll

@@ -9,6 +9,8 @@ $(function() {
         let all_travel_cost_csv = $.csv.toArrays(data);
         console.log(all_travel_cost_csv);
         let end_id_list = all_travel_cost_csv[0];
+        // 1行目の配列の先頭要素は空白なので2列目から取得
+        end_id_list.shift();
         console.log(end_id_list);
 
         // 1行目の配列を削除
@@ -20,7 +22,7 @@ $(function() {
             let start_id = start_travel_cost[0];
             // 2列目以降はテレポ代
             // 1行目の配列の先頭要素は空白なので2列目から取得
-            let num = 1;
+            let num = 0;
             let travel_end_cost = {};
             start_travel_cost.forEach(function(travel_cost){
                 // 特定の出発点での、到着点とテレポ代の連想配列

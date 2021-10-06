@@ -19,20 +19,19 @@ $(function() {
             let start_id = start_travel_cost[0];
             // 2列目以降はテレポ代
 
-            let num = 0;
             let travel_end_cost = {};
-            start_travel_cost.forEach(function(travel_cost){
+            for(let i = 0; i < start_travel_cost.length; i++) {
+                let travel_cost = start_travel_cost[i];
                 // 1行目の配列の先頭要素は空白なので2列目から取得
-                if(num > 0){
+                if(i > 0){
                     // 特定の出発点での、到着点とテレポ代の連想配列
                     travel_end_cost = {};
-                    let end_id = end_id_list[num];
+                    let end_id = end_id_list[i];
                     console.log(end_id);
                     console.log(travel_cost);
                     travel_end_cost[end_id] = travel_cost;
                 }
-                num++;
-            });
+            }
             console.log(travel_end_cost);
             all_travel_cost_table[start_id] = travel_end_cost;
         });

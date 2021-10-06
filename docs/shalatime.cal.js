@@ -25,7 +25,9 @@ $(function() {
             start_travel_cost.forEach(function(travel_cost){
                 // 特定の出発点での、到着点とテレポ代の連想配列
                 travel_end_cost = {};
-                travel_end_cost[end_id_list[num]] = travel_cost;
+                let end_id = end_id_list[num];
+                console.log(end_id);
+                travel_end_cost[end_id] = travel_cost;
                 num++;
             });
             all_travel_cost_table[start_id] = travel_end_cost;

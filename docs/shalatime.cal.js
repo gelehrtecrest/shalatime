@@ -1,3 +1,11 @@
+const id_suffix = [
+    '-start',
+    '-end',
+    '-pass',
+    '-free',
+    '-half',
+    '-homepoint',
+];
 $(function() {
     var all_travel_cost_table;
     // 2点間の値段を書いたcsvファイルをダウンロードします
@@ -170,8 +178,8 @@ $(function() {
     // ルートのidリストから、値段を計算する
     function calOrGetRouteCost(routearr){
         // とりあえず、配列の最初と最後のコスト
-        let cal_start = routearr[0];
-        let cal_end = routearr[routearr.length - 1];
+        let cal_start = delete_suffix(routearr[0]);
+        let cal_end = delete_suffix(routearr[routearr.length - 1]);
         console.log("cal-----------------");
         console.log(cal_start);
         console.log(cal_end);
@@ -181,5 +189,13 @@ $(function() {
         let cost = start_cost[cal_end];
 
         return cost;
+    }
+
+    // 接尾リストにあればreplaceで空白に書き換える
+    function delete_suffix(str){
+        id_suffix.forEach(function(suffix){
+            str.replace(suffix, '');
+        });
+        return str;
     }
 });

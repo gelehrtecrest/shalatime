@@ -230,6 +230,7 @@ $(function() {
         aetheryte_name_list[id] = name;
     }
     function get_aetheryte_name(id){
+        console.log(aetheryte_name_list);
         return aetheryte_name_list[id];
     }
 });

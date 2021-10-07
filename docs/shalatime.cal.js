@@ -164,7 +164,7 @@ $(function() {
         show_travel_var();
 
         // Twitter文章設定
-        set_tweet_text();
+        set_tweet_text(route_best, route_best_gil);
     }
 
     // エーテライトのリストから、ルートのStringを作る
@@ -239,7 +239,8 @@ $(function() {
         return aetheryte_name_list[key];
     }
 
-    function set_tweet_text(str){
+    function set_tweet_text(route, gil){
+        let str = route + " (" + gil + "ギル) が安そうなルートです ";
         let encode_str = encodeURI(str);
         let text = twitter_str_prefix + encode_str + twitter_str_suffix;
         $('#resulttweet').attr('href', text);

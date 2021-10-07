@@ -8,6 +8,10 @@ const id_suffix = [
     '-homepoint',
 ];
 */
+
+// ファイル名
+const filecsv_aetheryte_name = 'aetheryte_id_list.csv';
+
 $(function() {
     var all_travel_cost_table;
     // 2点間の値段を書いたcsvファイルをダウンロードします
@@ -161,7 +165,11 @@ $(function() {
         let str = "";
         // とりあえずルートidを並べるだけで仮実装
         routearr.forEach(function(point){
-            str = str + point + " ";
+            if(str == ""){
+                str = get_aetheryte_name(point);
+            } else {
+                str = str + " → " + get_aetheryte_name(point);
+            }
         });
 
         return str;
@@ -199,5 +207,27 @@ $(function() {
             str = str.replace(suffix, '');
         });
         return str;
+    }
+
+    // テレポ先の設定
+    let aetheryte_name_list = {};
+    function parseCsv(data) {
+        let csv = $.csv.toArrays(data);
+
+        //一行目は見出しなので削除
+        csv.shift();
+    
+        $(csv).each(function(i) {
+            set_aetheryte_name(this[1].toString(), this[2].toString());
+        });
+    }
+    $.get(filecsv_aetheryte_name, parseCsv, 'text');
+
+    function set_aetheryte_name(id, name){
+        // とりあえず日本語
+        aetheryte_name_list[id] = name;
+    }
+    function get_aetheryte_name(id){
+        return aetheryte_name_list[id];
     }
 });

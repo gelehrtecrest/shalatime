@@ -175,7 +175,22 @@ $(function() {
         let start_cost = all_travel_cost_table[cal_start];
         let cost = start_cost[cal_end];
 
+        // 割引
+        cost = discount_cost(cost);
         return cost;
+    }
+
+    // 割引計算
+    function discount_cost(cost){
+        cost_float = parseFloat(cost);
+        let discount = $('input[name=telepo-discount-setting]:checked').attr('value');
+        if(discount === undefined){
+            return cost_float;
+        }
+        let discount_float = parseFloat(discount);
+        // 割り引いたあと、小数点切り捨て
+        cost_float = Math.floor(cost_float * (1 - discount_float));
+        return cost_float;
     }
 
     // 接尾リストにあればreplaceで空白に書き換える

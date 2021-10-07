@@ -240,7 +240,8 @@ $(function() {
     }
 
     function set_tweet_text(route, gil){
-        let str = route + " (" + gil + "ギル) が安そうなルートです ";
+        let discount = parseFloat($('input[name=telepo-discount-setting]:checked').attr('value')) * 100;
+        let str = route + " (" + gil + "ギル " + discount + "%割引) が安そうなルートです ";
         let encode_str = encodeURI(str);
         let text = twitter_str_prefix + encode_str + twitter_str_suffix;
         $('#resulttweet').attr('href', text);

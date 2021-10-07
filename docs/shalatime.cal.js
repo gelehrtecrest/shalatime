@@ -225,6 +225,8 @@ $(function() {
 
     function set_aetheryte_name(id, name){
         // とりあえず日本語
+        console.log(id);
+        console.log(name);
         aetheryte_name_list[id] = name;
     }
     function get_aetheryte_name(id){

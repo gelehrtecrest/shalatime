@@ -12,6 +12,10 @@ const id_suffix = [
 // ファイル名
 const filecsv_aetheryte_name = 'aetheryte_id_list.csv';
 
+// Twitterの定型文
+const twitter_str_prefix = 'https://twitter.com/intent/tweet?text=';
+const twitter_str_suffix = '%20%23シャーレタイム%20https%3A%2F%2Fgelehrtecrest.github.io%2Fshalatime%2F';
+
 $(function() {
     var all_travel_cost_table;
     // 2点間の値段を書いたcsvファイルをダウンロードします
@@ -158,6 +162,9 @@ $(function() {
 
         // 表示
         show_travel_var();
+
+        // Twitter文章設定
+        set_tweet_text();
     }
 
     // エーテライトのリストから、ルートのStringを作る
@@ -230,5 +237,11 @@ $(function() {
     function get_aetheryte_name(id){
         let key = delete_suffix(id);
         return aetheryte_name_list[key];
+    }
+
+    function set_tweet_text(str){
+        let encode_str = encodeURI(str);
+        let text = twitter_str_prefix + encode_str + twitter_str_suffix;
+        $('#resulttweet').attr('href', text);
     }
 });

@@ -25,28 +25,31 @@ $(function() {
         all_travel_cost_table = {};
 
         let all_travel_cost_csv = $.csv.toArrays(data);
-        let end_id_list = all_travel_cost_csv[0];
+        let start_id_list = all_travel_cost_csv[0];
 
         // 1行目の配列を削除
         all_travel_cost_csv.shift();
 
         // 2行目から出発点とテレポ代を取得する
-        all_travel_cost_csv.forEach(function(start_travel_cost){
-            // 1列目は出発点のid
-            let start_id = start_travel_cost[0];
+        all_travel_cost_csv.forEach(function(end_travel_cost){
+            // 1列目は到着点のid
+            let end_id = end_travel_cost[0];
             // 2列目以降はテレポ代
 
             let travel_end_cost = {};
-            for(let i = 0; i < start_travel_cost.length; i++) {
-                let travel_cost = start_travel_cost[i];
+            for(let i = 0; i < end_travel_cost.length; i++) {
+                let travel_cost = end_travel_cost[i];
                 // 1行目の配列の先頭要素は空白なので2列目から取得
                 if(i > 0){
-                    // 特定の出発点での、到着点とテレポ代の連想配列
-                    let end_id = end_id_list[i];
-                    travel_end_cost[end_id] = travel_cost;
+                    // 特定の到着点での、出発点とテレポ代の連想配列
+                    let start_id = start_id_list[i];
+                    // 念の為に初期化
+                    if(all_travel_cost_table[start_id] === undefined){
+                        all_travel_cost_table[start_id] = {};
+                    }
+                    all_travel_cost_table[start_id][end_id] = travel_cost;
                 }
             }
-            all_travel_cost_table[start_id] = travel_end_cost;
         });
     }
 

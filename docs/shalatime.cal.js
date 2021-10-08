@@ -350,7 +350,7 @@ $(function() {
 
         });
         
-        str_short = '出発:' + start_point_name + '%0D%0A 到着:' + end_point_name + '%0D%0A 通過点:[' + pass_point_str + '] の最安ルートは%0D%0A '; 
+        str_short = '出発:' + start_point_name + ' 到着:' + end_point_name + ' 通過点:[' + pass_point_str + '] の最安ルートは '; 
 
         // ルートの文字列の長さが規定数超えていたら、後ろを削除する
         str_short = str_short + route;

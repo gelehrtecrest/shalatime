@@ -155,7 +155,6 @@ $(function() {
     function getPassPointsNamelist(){
         let ids = getPassPoints();
         let str_list = []
-        console.log(ids);
         ids.forEach(function(id){
             str_list.push(get_aetheryte_name(delete_suffix(id)));
         });
@@ -240,7 +239,6 @@ $(function() {
     $('input').change(function() {
         $('input[name=aetheryte-setting]:checked').each(function(){
             let id = $(this).attr('id');
-            console.log(id);
             // 無料エーテライトの場合
             if (id.indexOf(zero_suffix) != -1) {
                 // 接尾辞を抜いて、idを保存
@@ -347,12 +345,12 @@ $(function() {
             if(pass_point_str==""){
                 pass_point_str = point;
             } else {
-                pass_point_str = pass_point_str + ',' + point;
+                pass_point_str = pass_point_str + ', ' + point;
             }
 
         });
         
-        str_short = '出発点:' + start_point_name + '到着点:' + end_point_name + '通過点:' + pass_point_str + ' の最安ルートは '; 
+        str_short = '出発:' + start_point_name + ' 到着:' + end_point_name + ' 通過点:[' + pass_point_str + '] の最安ルートは '; 
 
         // ルートの文字列の長さが規定数超えていたら、後ろを削除する
         str_short = str_short + route;
@@ -362,7 +360,7 @@ $(function() {
 
         // 割引チェック
         let discount = parseFloat($('input[name=telepo-discount-setting]:checked').attr('value')) * 100;
-        let str = str_short + " (" + gil + "g " + discount + "%割引)";
+        let str = str_short + " (" + gil + "g " + discount + "%割引)です";
         let encode_str = encodeURI(str);
         let text = twitter_str_prefix + encode_str + twitter_str_suffix;
         $('#resulttweet').attr('href', text);

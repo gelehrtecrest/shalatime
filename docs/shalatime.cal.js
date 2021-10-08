@@ -226,7 +226,9 @@ $(function() {
         }
 
         // 無料エーテライトに立ち寄らないなら、半額エーテライト・居住区から選ぶ
-        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(start, end, passing_point_list);
+        // 深さを1とする
+        let deep = 1;
+        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(start, end, passing_point_list, deep);
         let cost_without_zero = cost_and_route_without_zero[0];
         let route_without_zero = cost_and_route_without_zero[1];
         if(cost_with_zero < 0){
@@ -239,7 +241,7 @@ $(function() {
         return route_with_zero;
     }
 
-    function getBest2PointRouteWithoutZero(start, end, point_list){
+    function getBest2PointRouteWithoutZero(start, end, point_list, deep){
         console.log("getBest2PointRouteWithoutZero-----------------------------");
         console.log(start);
         console.log(end);
@@ -251,20 +253,24 @@ $(function() {
         let tmp_cost = -1;
         let tmp_cost_and_route = [];
         let tmp_point = undefined;
-        point_list.forEach(function(point){
-            tmp_point_list = delete_point_list_in_point(point_list, point);
-            let return_cost_and_route = getBest2PointRouteWithoutZero(start, end, tmp_point_list);
-            if(tmp_cost < 0){
-                tmp_cost = return_cost_and_route[0];
-                tmp_point = point;
-            } else {
-                if(tmp_cost > return_cost_and_route[0]){
-                    tmp_cost_and_route = return_cost_and_route;
+        // deepが0以下なら飛ばす
+        if(deep <= 0){
+            deep--;
+            point_list.forEach(function(point){
+                tmp_point_list = delete_point_list_in_point(point_list, point);
+                let return_cost_and_route = getBest2PointRouteWithoutZero(start, end, tmp_point_list, deep);
+                if(tmp_cost < 0){
                     tmp_cost = return_cost_and_route[0];
                     tmp_point = point;
+                } else {
+                    if(tmp_cost > return_cost_and_route[0]){
+                        tmp_cost_and_route = return_cost_and_route;
+                        tmp_cost = return_cost_and_route[0];
+                        tmp_point = point;
+                    }
                 }
-            }
-        });
+            });
+        }
         console.log("getBest2PointRouteWithoutZero result-----------------------------");
         console.log(tmp_cost);
         console.log(tmp_cost_without_point);

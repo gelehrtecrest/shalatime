@@ -237,6 +237,7 @@ $(function() {
     const half_suffix = '-zero';
     $('input').change(function() {
         let list = $('input[name=aetheryte-setting]:checked').attr('id');
+        console.log(list);
         list.forEach(function(id){
             // 無料エーテライトの場合
             if (id.indexOf(zero_suffix) != -1) {

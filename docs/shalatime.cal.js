@@ -146,11 +146,14 @@ $(function() {
     
     // 到着点の取得
     function getPassPoints(){
-        return $('input[name=aetheryte-end]:checked').attr('id');
+        return $('input[name=aetheryte-pass]:checked').attr('id');
     }
     function getPassPointsNamelist(){
         let ids = getPassPoints();
         let str_list = []
+        console.log(ids);
+        // 一旦仮に空配列を返す
+        return [];
         ids.forEach(function(id){
             str_list.push(get_aetheryte_name(delete_suffix()));
         });

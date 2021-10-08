@@ -209,10 +209,7 @@ $(function() {
         let route = [];
 
         // 無料以外で立ち寄るところは、安いところだけ
-        console.log("-------------------------");
-        console.log(goodvalue_point_list);
         let passing_point_list = half_point_list.concat(goodvalue_point_list);
-        console.log(passing_point_list);
         // 無料に立ち寄るとしたら１箇所だけ
         zero_point_list.forEach(function(zero_point){
             let cost_and_route = getBest2PointRouteWithoutZero(zero_point, end, passing_point_list);
@@ -250,10 +247,6 @@ $(function() {
 
     function getBest2PointRouteWithoutZero(start, end, point_list, deep, count){
         count++;
-        console.log("getBest2PointRouteWithoutZero-----------------------------");
-        console.log(start);
-        console.log(end);
-        console.log(point_list);
         // point_listから選ばない場合
         let tmp_cost_without_point = calOrGetRouteCost([start, end]);
 
@@ -265,18 +258,12 @@ $(function() {
             deep--;
             point_list.forEach(function(point){
                 tmp_point_list = delete_point_list_in_point(point_list, point);
-                console.log("------------------------");
-                console.log(point);
-                console.log(tmp_point_list);
                 let return_start_to_point_cost = calOrGetRouteCost([start, point]);
                 let return_point_to_end_cost_and_route = getBest2PointRouteWithoutZero(point, end, tmp_point_list, deep, count);
                 let return_start_to_point_to_end_cost = return_start_to_point_cost + return_point_to_end_cost_and_route[0];
-                console.log(return_start_to_point_to_end_cost);
-                console.log(return_point_to_end_cost_and_route);
                 let return_route = return_point_to_end_cost_and_route[1];
                 count = count + return_point_to_end_cost_and_route[2];
                 return_route.unshift(start)
-                console.log(return_route);
                 if(tmp_cost < 0){
                     tmp_route = return_route;
                     tmp_cost = return_start_to_point_to_end_cost;
@@ -286,13 +273,8 @@ $(function() {
                         tmp_cost = return_start_to_point_to_end_cost;
                     }
                 }
-                console.log(tmp_route);
             });
         }
-        console.log("getBest2PointRouteWithoutZero result-----------------------------");
-        console.log(tmp_cost);
-        console.log(tmp_cost_without_point);
-        console.log(tmp_route);
         // pointリストから選ばない方がコストが少ない場合
         if(tmp_cost < 0 || tmp_cost_without_point < tmp_cost){
             return [tmp_cost_without_point, [start, end], count];
@@ -314,8 +296,6 @@ $(function() {
 
     // 各ルートを巡回し、最適なルートを探す
     function travelingAllRoute(route_all){
-        console.log("traveling------------------------");
-        console.log(route_all);
         // 全ルート数
         routenum_all = route_all.length;
         // 計算したルート数
@@ -378,9 +358,6 @@ $(function() {
         for(let i = 0; i< routearr.length - 1; i++){
             let cal_start = delete_suffix(routearr[i]);
             let cal_end = delete_suffix(routearr[i+1]);
-            console.log("cal-----------------------------");
-            console.log(cal_start);
-            console.log(cal_end);
             let start_cost = all_travel_cost_table[cal_start];
             let raw_cost = start_cost[cal_end];
 

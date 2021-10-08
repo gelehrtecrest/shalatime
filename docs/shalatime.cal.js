@@ -302,6 +302,8 @@ $(function() {
 
     // 各ルートを巡回し、最適なルートを探す
     function travelingAllRoute(route_all){
+        console.log("traveling------------------------");
+        console.log(route_all);
         // 全ルート数
         routenum_all = route_all.length;
         // 計算したルート数
@@ -364,6 +366,9 @@ $(function() {
         for(let i = 0; i< routearr.length - 1; i++){
             let cal_start = delete_suffix(routearr[i]);
             let cal_end = delete_suffix(routearr[i+1]);
+            console.log("cal-----------------------------");
+            console.log(cal_start);
+            console.log(cal_end);
             let start_cost = all_travel_cost_table[cal_start];
             let raw_cost = start_cost[cal_end];
 

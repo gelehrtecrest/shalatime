@@ -234,8 +234,8 @@ $(function() {
     // 無料・半額エーテライトの格納
     let zero_point_list = [];
     let half_point_list = [];
-    const zero_suffix = '-half';
-    const half_suffix = '-zero';
+    const zero_suffix = '-zero';
+    const half_suffix = '-half';
     $('input').change(function() {
         $('input[name=aetheryte-setting]:checked').each(function(){
             let id = $(this).attr('id');
@@ -259,7 +259,7 @@ $(function() {
             return 0;
         }
         // 半額に含まれていたら
-        else if (zero_point_list.indexOf(point) !== -1) {
+        else if (half_point_list.indexOf(point) !== -1) {
             let raw_cost_float = parseFloat(raw_cost);
             // 割り引いたあと、小数点切り捨て
             return Math.floor(raw_cost_float * 0.5);
@@ -275,7 +275,7 @@ $(function() {
             return ':無料';
         }
         // 半額に含まれていたら
-        else if (zero_point_list.indexOf(point) !== -1) {
+        else if (half_point_list.indexOf(point) !== -1) {
             return ':半額'
         }
         return '';
@@ -350,7 +350,7 @@ $(function() {
 
         });
         
-        str_short = '出発:' + start_point_name + ' 到着:' + end_point_name + ' 通過点:[' + pass_point_str + '] の最安ルートは '; 
+        str_short = `出発:${start_point_name} 到着:${end_point_name} 通過点:[${pass_point_str}] の最安ルートは `; 
 
         // ルートの文字列の長さが規定数超えていたら、後ろを削除する
         str_short = str_short + route;

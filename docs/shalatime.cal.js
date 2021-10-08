@@ -99,6 +99,10 @@ $(function() {
     function travelingHikasen(travel_cost_table){
         // 定義のリセット
         var_reset();
+        // 半額・無料エーテライトの設定の保持
+        if(!is_create_zero_or_half_cost_list()){
+            create_zero_or_half_cost_list();
+        }
         // 表示
         show_travel_var();
 
@@ -237,6 +241,19 @@ $(function() {
     const zero_suffix = '-zero';
     const half_suffix = '-half';
     $('input').change(function() {
+        create_zero_or_half_cost_list();
+    });
+    // リストが両方とも空配列の場合は、リストが作られていないと判断する
+    function is_create_zero_or_half_cost_list(){
+        if(zero_or_half_cost.length == 0 && half_point_list.length == 0){
+            return false;
+        }
+        return true;
+    }
+    function create_zero_or_half_cost_list(){
+        // 初期化しておく
+        zero_point_list = [];
+        half_point_list = [];
         $('input[name=aetheryte-setting]:checked').each(function(){
             let id = $(this).attr('id');
             // 無料エーテライトの場合
@@ -250,7 +267,7 @@ $(function() {
                 half_point_list.push(delete_suffix(id));
             }
         });
-    });
+    }
 
     // 無料・半額のチェックコスト
     function zero_or_half_cost(raw_cost, point){

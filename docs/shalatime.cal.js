@@ -238,7 +238,7 @@ $(function() {
     // 無料・半額エーテライトの格納
     let zero_point_list = [];
     let half_point_list = [];
-    const zero_suffix = '-zero';
+    const zero_suffix = '-free';
     const half_suffix = '-half';
     $('input').change(function() {
         create_zero_or_half_cost_list();

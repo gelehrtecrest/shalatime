@@ -11,7 +11,8 @@ const id_suffix = [
 
 // ファイル名
 const filecsv_aetheryte_name = 'aetheryte_id_list.csv';
-
+const filecsv_aetheryte_short_name = 'aetheryte_id_list_short.csv';
+const filecsv_travel_cost_table_name = 'travel_cost_table.csv';
 // Twitterの定型文
 const twitter_str_prefix = 'https://twitter.com/intent/tweet?text=';
 const twitter_str_suffix = '%20%23シャーレタイム%20https%3A%2F%2Fgelehrtecrest.github.io%2Fshalatime%2F';
@@ -19,7 +20,7 @@ const twitter_str_suffix = '%20%23シャーレタイム%20https%3A%2F%2Fgelehrte
 $(function() {
     var all_travel_cost_table;
     // 2点間の値段を書いたcsvファイルをダウンロードします
-    $.get('travel_cost_table.csv', parseTravelCostTableCsv, 'text');
+    $.get(filecsv_travel_cost_table_name, parseTravelCostTableCsv, 'text');
     function parseTravelCostTableCsv(data) {
         // 初期化
         all_travel_cost_table = {};
@@ -136,16 +137,16 @@ $(function() {
     function getStartPoint(){
         return $('input[name=aetheryte-start]:checked').attr('id');
     }
-    function getStartPointName(){
-        return get_aetheryte_name(delete_suffix(getStartPoint()));
+    function getStartPointShortName(){
+        return get_aetheryte_short_name(delete_suffix(getStartPoint()));
     }
 
     // 到着点の取得
     function getEndPoint(){
         return $('input[name=aetheryte-end]:checked').attr('id');
     }
-    function getEndPointName(){
-        return get_aetheryte_name(delete_suffix(getEndPoint()));
+    function getEndPointShortName(){
+        return get_aetheryte_short_name(delete_suffix(getEndPoint()));
     }
     
     // 到着点の取得
@@ -156,11 +157,11 @@ $(function() {
         });
         return ids;
     }
-    function getPassPointsNamelist(){
+    function getPassPointsShortNamelist(){
         let ids = getPassPoints();
         let str_list = []
         ids.forEach(function(id){
-            str_list.push(get_aetheryte_name(delete_suffix(id)));
+            str_list.push(get_aetheryte_short_name(delete_suffix(id)));
         });
         return str_list;
     }
@@ -183,6 +184,7 @@ $(function() {
 
         // 現在は一つのルートだけ
         let route = route_all[0];
+        let route_best_list = route;
         // エーテライトのリストから、ルートのStringを作る
         route_str = toRouteString(route);
         // 現在最安ルートとして確認しているルート
@@ -194,7 +196,7 @@ $(function() {
         show_travel_var();
 
         // Twitter文章設定
-        set_tweet_text(route_best, route_best_gil);
+        set_tweet_text(toRouteShortString(route_best_list), route_best_gil);
     }
 
     // エーテライトのリストから、ルートのStringを作る
@@ -210,6 +212,21 @@ $(function() {
             }
         });
 
+        return str;
+    }
+    // エーテライトのリストから、ルートのStringを作る
+    function toRouteShortString(routearr){
+        let str = "";
+        // とりあえずルートidを並べるだけで仮実装
+        // 2つ目以降のエーテライトが無料・半額の場合はその旨も記載
+        routearr.forEach(function(point){
+            if(str == ""){
+                str = get_aetheryte_name(point);
+            } else {
+                str = str + " → " + get_aetheryte_short_name(point) + get_zero_or_half_name(point);
+            }
+        });
+    
         return str;
     }
     
@@ -324,6 +341,7 @@ $(function() {
 
     // テレポ先の設定
     let aetheryte_name_list = {};
+    let aetheryte_short_name_list = {};
     function parseCsv(data) {
         let csv = $.csv.toArrays(data);
 
@@ -335,14 +353,33 @@ $(function() {
         });
     }
     $.get(filecsv_aetheryte_name, parseCsv, 'text');
+    function parseShortCsv(data) {
+        let csv = $.csv.toArrays(data);
+
+        //一行目は見出しなので削除
+        csv.shift();
+    
+        $(csv).each(function(i) {
+            set_aetheryte_short_name(this[1].toString(), this[2].toString());
+        });
+    }
+    $.get(filecsv_aetheryte_short_name, parseShortCsv, 'text');
 
     function set_aetheryte_name(id, name){
         // とりあえず日本語
         aetheryte_name_list[id] = name;
     }
+    function set_aetheryte_short_name(id, name){
+        // とりあえず日本語
+        aetheryte_short_name_list[id] = name;
+    }
     function get_aetheryte_name(id){
         let key = delete_suffix(id);
         return aetheryte_name_list[key];
+    }
+    function get_aetheryte_short_name(id){
+        let key = delete_suffix(id);
+        return aetheryte_short_name_list[key];
     }
 
     const route_max_length = 80;
@@ -350,11 +387,11 @@ $(function() {
         let str_short;
 
         // 出発点の取得
-        let start_point_name = getStartPointName();
+        let start_point_name = getStartPointShortName();
         // 到着点の取得
-        let end_point_name = getEndPointName();
+        let end_point_name = getEndPointShortName();
         // 通過点の取得
-        let pass_point_names = getPassPointsNamelist();
+        let pass_point_names = getPassPointsShortNamelist();
 
         
         // ルートの設定値チェック

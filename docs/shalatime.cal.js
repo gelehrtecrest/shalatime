@@ -251,8 +251,7 @@ $(function() {
 
         // point_listから選ぶ場合
         let tmp_cost = -1;
-        let tmp_cost_and_route = [];
-        let tmp_point = undefined;
+        let tmp_route = [];
         // deepが0以下なら飛ばす
         if(deep > 0){
             deep--;
@@ -261,16 +260,17 @@ $(function() {
                 console.log("------------------------");
                 console.log(point);
                 console.log(tmp_point_list);
-                let return_cost_and_route = getBest2PointRouteWithoutZero(point, end, tmp_point_list, deep);
+                let return_start_to_point_cost = calOrGetRouteCost([start, point]);
+                let return_point_to_end_cost_and_route = getBest2PointRouteWithoutZero(point, end, tmp_point_list, deep);
                 console.log(return_cost_and_route);
+                let return_start_to_point_to_end_cost = return_start_to_point_cost + return_point_to_end_cost_and_route[0];
                 if(tmp_cost < 0){
-                    tmp_cost = return_cost_and_route[0];
-                    tmp_point = point;
+                    tmp_route = return_point_to_end_cost_and_route[1].unshift(start);
+                    tmp_cost = return_start_to_point_to_end_cost;
                 } else {
-                    if(tmp_cost > return_cost_and_route[0]){
-                        tmp_cost_and_route = return_cost_and_route;
-                        tmp_cost = return_cost_and_route[0];
-                        tmp_point = point;
+                    if(tmp_cost > return_start_to_point_to_end_cost){
+                        tmp_route = return_point_to_end_cost_and_route[1].unshift(start);
+                        tmp_cost = return_start_to_point_to_end_cost;
                     }
                 }
             });
@@ -278,15 +278,13 @@ $(function() {
         console.log("getBest2PointRouteWithoutZero result-----------------------------");
         console.log(tmp_cost);
         console.log(tmp_cost_without_point);
-        console.log(tmp_cost_and_route);
+        console.log(tmp_route);
         // pointリストから選ばない方がコストが少ない場合
         if(tmp_cost < 0 || tmp_cost_without_point < tmp_cost_and_route[0]){
             return [tmp_cost_without_point, [start, end]];
         }
         // pointリストから選んだほうがコストが少ない場合
-        // 今までのリストに、先頭にpointを追加
-        tmp_cost_and_route = tmp_cost_and_route.unshift(tmp_point);
-        return [tmp_cost, tmp_cost_and_route];
+        return [tmp_cost, tmp_route];
     }
 
     // 配列から、含まれている要素を削除する

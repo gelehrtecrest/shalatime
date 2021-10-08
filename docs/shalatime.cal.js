@@ -132,10 +132,29 @@ $(function() {
     function getStartPoint(){
         return $('input[name=aetheryte-start]:checked').attr('id');
     }
+    function getStartPointName(){
+        return get_aetheryte_name(delete_suffix(getStartPoint()));
+    }
 
     // 到着点の取得
     function getEndPoint(){
         return $('input[name=aetheryte-end]:checked').attr('id');
+    }
+    function getEndPointName(){
+        return get_aetheryte_name(delete_suffix(getEndPoint()));
+    }
+    
+    // 到着点の取得
+    function getPassPoints(){
+        return $('input[name=aetheryte-end]:checked').attr('id');
+    }
+    function getPassPointsNamelist(){
+        let ids = getPassPoints();
+        let str_list = []
+        ids.forEach(function(id){
+            str_list.push(get_aetheryte_name(delete_suffix()));
+        });
+        return str_list;
     }
     
     // 入力から最適なルートを計算する
@@ -174,29 +193,91 @@ $(function() {
     function toRouteString(routearr){
         let str = "";
         // とりあえずルートidを並べるだけで仮実装
+        // 2つ目以降のエーテライトが無料・半額の場合はその旨も記載
         routearr.forEach(function(point){
             if(str == ""){
                 str = get_aetheryte_name(point);
             } else {
-                str = str + " → " + get_aetheryte_name(point);
+                str = str + " → " + get_aetheryte_name(point) + get_zero_or_half_name(point);
             }
         });
 
         return str;
     }
+    
 
     // ルートのidリストから、値段を計算する
     function calOrGetRouteCost(routearr){
-        // とりあえず、配列の最初と最後のコスト
-        let cal_start = delete_suffix(routearr[0]);
-        let cal_end = delete_suffix(routearr[routearr.length - 1]);
-        let start_cost = all_travel_cost_table[cal_start];
-        let cost = start_cost[cal_end];
+        // 配列から先頭2つ取り出して、2つのテーブルを計算
+        // 先頭2つ目のエーテライトが無料・半額の場合は、別途計算する
+        let cost = 0;
+        for(let i = 0; i< routearr.length - 1; i++){
+            let cal_start = delete_suffix(routearr[i]);
+            let cal_end = delete_suffix(routearr[i+1]);
+            let start_cost = all_travel_cost_table[cal_start];
+            let raw_cost = start_cost[cal_end];
 
-        // 割引
-        cost = discount_cost(cost);
+            // 無料・半額のチェック
+            let point_discount_cost = zero_or_half_cost(raw_cost, cal_end);
+            // テレポ割引
+            cost = cost + discount_cost(point_discount_cost);
+
+        }
+
         return cost;
     }
+
+    // 無料・半額エーテライトの格納
+    let zero_point_list = [];
+    let half_point_list = [];
+    const zero_suffix = '-half';
+    const half_suffix = '-zero';
+    $('input').change(function() {
+        let list = $('input[name=aetheryte-setting]:checked').attr('id');
+        list.forEach(function(id){
+            // 無料エーテライトの場合
+            if (id.indexOf(zero_suffix) != -1) {
+                // 接尾辞を抜いて、idを保存
+                zero_point_list.push(delete_suffix(id));
+            }
+            // 半額エーテライトの場合
+            else if (id.indexOf(half_suffix) != -1) {
+                // 接尾辞を抜いて、idを保存
+                half_point_list.push(delete_suffix(id));
+            }
+        });
+    });
+
+    // 無料・半額のチェックコスト
+    function zero_or_half_cost(raw_cost, point){
+        // 無料に含まれていたら
+        if (zero_point_list.indexOf(point) !== -1) {
+            return 0;
+        }
+        // 半額に含まれていたら
+        else if (zero_point_list.indexOf(point) !== -1) {
+            let raw_cost_float = parseFloat(raw_cost);
+            // 割り引いたあと、小数点切り捨て
+            return Math.floor(raw_cost_float * 0.5);
+        }
+
+        return raw_cost;
+    }
+
+    // 無料・半額のチェックネーム
+    function get_zero_or_half_name(point){
+        // 無料に含まれていたら
+        if (zero_point_list.indexOf(point) !== -1) {
+            return ':無料';
+        }
+        // 半額に含まれていたら
+        else if (zero_point_list.indexOf(point) !== -1) {
+            return ':半額'
+        }
+        return '';
+    }
+
+
 
     // 割引計算
     function discount_cost(cost){
@@ -242,9 +323,40 @@ $(function() {
         return aetheryte_name_list[key];
     }
 
+    const route_max_length = 80;
     function set_tweet_text(route, gil){
+        let str_short;
+
+        // 出発点の取得
+        let start_point_name = getStartPointName();
+        // 到着点の取得
+        let end_point_name = getEndPointName();
+        // 通過点の取得
+        let pass_point_names = getPassPointsNamelist();
+
+        
+        // ルートの設定値チェック
+        let pass_point_str = "";
+        pass_point_names.forEach(function(point){
+            if(pass_point_str==""){
+                pass_point_str = point;
+            } else {
+                pass_point_str = pass_point_str + ',' + point;
+            }
+
+        });
+        
+        str_short = '出発点:' + start_point_name + '到着点:' + end_point_name + '通過点:' + pass_point_str + ' の最安ルートは '; 
+
+        // ルートの文字列の長さが規定数超えていたら、後ろを削除する
+        str_short = str_short + route;
+        if(route.length > route_max_length){
+            str_short = route.substr(0, route_max_length) + '... ';
+        }
+
+        // 割引チェック
         let discount = parseFloat($('input[name=telepo-discount-setting]:checked').attr('value')) * 100;
-        let str = route + " (" + gil + "ギル " + discount + "%割引) が安そうなルートです ";
+        let str = str_short + " (" + gil + "g " + discount + "%割引)";
         let encode_str = encodeURI(str);
         let text = twitter_str_prefix + encode_str + twitter_str_suffix;
         $('#resulttweet').attr('href', text);

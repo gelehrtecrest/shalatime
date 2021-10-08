@@ -151,7 +151,7 @@ $(function() {
         travelingAllRoute(route_all_count[0]);
 
         // 一時的に表示上出す
-        routenum_all = route_all_count[1];
+        routenum_cal = route_all_count[1];
         routenum_all = route_all_count[1];
         $("#routeallnum").val(routenum_all);
         $("#routenum").val(routenum_cal);

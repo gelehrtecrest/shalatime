@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
-	<head lang="ja">
+	<head lang="ja" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/ fb# prefix属性: http://ogp.me/ns/ prefix属性#">
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta description="FINAL FANTASY XIVでテレポする料金を計算します。">
+		<meta property="og:url" content="https://gelehrtecrest.github.io/shalatime/" />
+		<meta property="og:type" content=" ページの種類" />
+		<meta property="og:title" content="シャーレタイム ShalaTime" />
+		<meta property="og:description" content="FINAL FANTASY XIVでテレポする料金を計算します。" />
+		<meta property="og:site_name" content="シャーレタイム ShalaTime" />	 
+		<meta property="og:image" content="https://gelehrtecrest.github.io/shalatime/logo.png" />
 		<title>シャーレタイム</title>
 		<script src="jquery-3.6.0.min.js"></script>
-		<!-- <script src="jquery.cookie.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script> -->
 		<script src="jquery.csv.min.js"></script>
 		<!-- 自作スクリプト -->
 		<script src="shalatime.setting.js"></script>
@@ -24,8 +28,10 @@
 	<body>
 		<div class="jumbotron">
 			<div class="container">
-				<h1>シャーレタイム</h1>
-				<p id="comment">FF14で各地をテレポ・デジョンする時に、料金の安いルートを検索します。</p>
+				<img class="d-block mx-auto img-fluid w-50" src="logo.png" alt="シャーレタイム">
+				<div class="text-center">
+					<p id="comment">FF14で各地をテレポ・デジョンする時に、料金の安いルートを検索します。</p>
+				</div>
 			</div>
 		</div>
 		<div class="container">

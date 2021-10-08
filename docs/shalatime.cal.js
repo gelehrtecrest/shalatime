@@ -202,7 +202,11 @@ $(function() {
 
         // 無料以外で立ち寄るところは、安いところだけ
         let passing_point_list = half_point_list;
+        console.log("-------------------------");
+        console.log(passing_point_list);
+        console.log(goodvalue_point_list);
         passing_point_list.concat(goodvalue_point_list);
+        console.log(passing_point_list);
         // 無料に立ち寄るとしたら１箇所だけ
         zero_point_list.forEach(function(zero_point){
             let cost_and_route = getBest2PointRouteWithoutZero(zero_point, end, passing_point_list);

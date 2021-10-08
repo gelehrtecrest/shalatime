@@ -296,12 +296,13 @@ $(function() {
 
     // 無料・半額のチェックネーム
     function get_zero_or_half_name(point){
+        let key = delete_suffix(point);
         // 無料に含まれていたら
-        if (zero_point_list.indexOf(point) !== -1) {
+        if (zero_point_list.indexOf(key) !== -1) {
             return ':無料';
         }
         // 半額に含まれていたら
-        else if (half_point_list.indexOf(point) !== -1) {
+        else if (half_point_list.indexOf(key) !== -1) {
             return ':半額'
         }
         return '';

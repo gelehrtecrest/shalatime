@@ -169,10 +169,95 @@ $(function() {
     // 入力から最適なルートを計算する
     function getAllRoute(start, end, passlist){
         let route_list = [];
-        // 現在はstartからendへの直通ルートだけ実装
-        let route = [start, end];
+        // ひとまず2点間のルートだけ
+        let route = getBest2PointRoute(start, end);
         route_list.push(route);
         return route_list;
+    }
+
+    // 2点間での移動でベストなルートを検索する
+    function getBest2PointRoute(start, end){
+        // 無料エーテライトを立ち寄るなら2点間の間の最初のエーテライト
+        // 先に無料エーテライトに立ち寄るルートを考える
+        let cost_with_zero = -1;
+        let route_with_zero = [];
+        let route = [];
+        // 無料に立ち寄るとしたら１箇所だけ
+        zero_point_list.forEach(function(zero_point){
+            let cost_and_route = getBest2PointRouteWithoutZero(zero_point, end, half_point_list);
+            let cost = cost_and_route[0];
+            if(cost_with_zero < 0){
+                cost_with_zero = cost;
+                route = cost_and_route[1];
+            } else {
+                if(cost_with_zero > cost){
+                    cost_with_zero = cost;
+                    route = cost_and_route[1];
+                }
+            }
+        });
+        // 先頭にスタートを入れる
+        if(route != []){
+            route_with_zero = route;
+            route_with_zero.unshift(start);
+        }
+
+        // 無料エーテライトに立ち寄らないなら、半額エーテライト・居住区から選ぶ
+        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(zero_point, end, half_point_list);
+        let cost_without_zero = cost_and_route_without_zero[0];
+        let route_without_zero = cost_and_route_without_zero[1];
+        if(cost_with_zero < 0){
+            return route_without_zero;
+        } else {
+            if(cost_with_zero > cost_without_zero){
+                return route_without_zero;
+            }
+        }
+        return route_with_zero;
+    }
+
+    function getBest2PointRouteWithoutZero(start, end, point_list){
+        // point_listから選ばない場合
+        let tmp_cost_without_point = calOrGetRouteCost([start, end]);
+
+        // point_listから選ぶ場合
+        let tmp_cost = -1;
+        let tmp_cost_and_route = [];
+        let tmp_point = undefined;
+        point_list.forEach(function(point){
+            tmp_point_list = delete_point_list_in_point(point_list, point);
+            let return_cost_and_route = getBest2PointRouteWithoutZero(start, end, tmp_point_list);
+            if(tmp_cost < 0){
+                tmp_cost = return_cost_and_route[0];
+                tmp_point = point;
+            } else {
+                if(tmp_cost > return_cost_and_route[0]){
+                    tmp_cost_and_route = return_cost_and_route;
+                    tmp_cost = return_cost_and_route[0];
+                    tmp_point = point;
+                }
+            }
+        });
+
+        // pointリストから選ばない方がコストが少ない場合
+        if(tmp_cost < 0 || tmp_cost_without_point < tmp_cost_and_route[0]){
+            return [tmp_cost_without_point, [start, end]];
+        }
+        // pointリストから選んだほうがコストが少ない場合
+        // 今までのリストに、先頭にpointを追加
+        tmp_cost_and_route.unshift(tmp_point);
+        return [tmp_cost, tmp_cost_and_route];
+    }
+
+    // 配列から、含まれている要素を削除する
+    function delete_point_list_in_point(point_list, delete_point){
+        let return_list = [];
+        point_list.forEach(function(point){
+            if(delete_point != point){
+                return_list.push(point);
+            }
+        });
+        return return_list;
     }
 
     // 各ルートを巡回し、最適なルートを探す

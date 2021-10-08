@@ -285,7 +285,7 @@ $(function() {
         }
         // pointリストから選んだほうがコストが少ない場合
         // 今までのリストに、先頭にpointを追加
-        tmp_cost_and_route.unshift(tmp_point);
+        tmp_cost_and_route = tmp_cost_and_route.unshift(tmp_point);
         return [tmp_cost, tmp_cost_and_route];
     }
 

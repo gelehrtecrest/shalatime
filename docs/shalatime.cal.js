@@ -67,7 +67,7 @@ $(function() {
 
         // 2行目から出発点とテレポ代を取得する
         csv.forEach(function(point){
-            goodvalue_point_list.push(point);
+            goodvalue_point_list.push(point[1]);
         });
     }
 

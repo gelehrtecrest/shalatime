@@ -236,9 +236,11 @@ $(function() {
     const zero_suffix = '-half';
     const half_suffix = '-zero';
     $('input').change(function() {
-        let list = $('input[name=aetheryte-setting]:checked').attr('id');
+        let list = $('input[name=aetheryte-setting]:checked');
         console.log(list);
-        list.forEach(function(id){
+        list.forEach(function(input){
+            let id = input.attr('id');
+            console.log(id);
             // 無料エーテライトの場合
             if (id.indexOf(zero_suffix) != -1) {
                 // 接尾辞を抜いて、idを保存

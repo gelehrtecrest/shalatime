@@ -203,7 +203,7 @@ $(function() {
         }
 
         // 無料エーテライトに立ち寄らないなら、半額エーテライト・居住区から選ぶ
-        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(zero_point, end, half_point_list);
+        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(start, end, half_point_list);
         let cost_without_zero = cost_and_route_without_zero[0];
         let route_without_zero = cost_and_route_without_zero[1];
         if(cost_with_zero < 0){

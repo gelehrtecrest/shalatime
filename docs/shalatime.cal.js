@@ -258,7 +258,11 @@ $(function() {
             deep--;
             point_list.forEach(function(point){
                 tmp_point_list = delete_point_list_in_point(point_list, point);
-                let return_cost_and_route = getBest2PointRouteWithoutZero(start, end, tmp_point_list, deep);
+                console.log("------------------------");
+                console.log(point);
+                console.log(tmp_point_list);
+                let return_cost_and_route = getBest2PointRouteWithoutZero(point, end, tmp_point_list, deep);
+                console.log(return_cost_and_route);
                 if(tmp_cost < 0){
                     tmp_cost = return_cost_and_route[0];
                     tmp_point = point;

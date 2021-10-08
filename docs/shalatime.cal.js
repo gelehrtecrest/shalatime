@@ -254,7 +254,7 @@ $(function() {
         let tmp_cost_and_route = [];
         let tmp_point = undefined;
         // deepが0以下なら飛ばす
-        if(deep <= 0){
+        if(deep > 0){
             deep--;
             point_list.forEach(function(point){
                 tmp_point_list = delete_point_list_in_point(point_list, point);

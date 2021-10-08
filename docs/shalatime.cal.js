@@ -245,7 +245,7 @@ $(function() {
     });
     // リストが両方とも空配列の場合は、リストが作られていないと判断する
     function is_create_zero_or_half_cost_list(){
-        if(zero_or_half_cost.length == 0 && half_point_list.length == 0){
+        if(zero_point_list.length == 0 && half_point_list.length == 0){
             return false;
         }
         return true;

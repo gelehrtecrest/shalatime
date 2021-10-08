@@ -13,6 +13,7 @@ const id_suffix = [
 const filecsv_aetheryte_name = 'aetheryte_id_list.csv';
 const filecsv_aetheryte_short_name = 'aetheryte_id_list_short.csv';
 const filecsv_travel_cost_table_name = 'travel_cost_table.csv';
+const filecsv_goodvalue_point_list_name = 'goodvalue_point_list.csv';
 // Twitterの定型文
 const twitter_str_prefix = 'https://twitter.com/intent/tweet?text=';
 const twitter_str_suffix = '%20%23シャーレタイム%20https%3A%2F%2Fgelehrtecrest.github.io%2Fshalatime%2F';
@@ -51,6 +52,22 @@ $(function() {
                     all_travel_cost_table[start_id][end_id] = travel_cost;
                 }
             }
+        });
+    }
+    let goodvalue_point_list;
+    $.get(filecsv_goodvalue_point_list_name, parseGoodValuePointListCsv, 'text');
+    function parseGoodValuePointListCsv(data) {
+        // 初期化
+        goodvalue_point_list = [];
+
+        let csv = $.csv.toArrays(data);
+
+        // 1行目の配列を削除
+        csv.shift();
+
+        // 2行目から出発点とテレポ代を取得する
+        csv.forEach(function(point){
+            goodvalue_point_list.push(point);
         });
     }
 
@@ -182,9 +199,13 @@ $(function() {
         let cost_with_zero = -1;
         let route_with_zero = [];
         let route = [];
+
+        // 無料以外で立ち寄るところは、安いところだけ
+        let passing_point_list = half_point_list;
+        passing_point_list.concat(goodvalue_point_list);
         // 無料に立ち寄るとしたら１箇所だけ
         zero_point_list.forEach(function(zero_point){
-            let cost_and_route = getBest2PointRouteWithoutZero(zero_point, end, half_point_list);
+            let cost_and_route = getBest2PointRouteWithoutZero(zero_point, end, passing_point_list);
             let cost = cost_and_route[0];
             if(cost_with_zero < 0){
                 cost_with_zero = cost;
@@ -203,7 +224,7 @@ $(function() {
         }
 
         // 無料エーテライトに立ち寄らないなら、半額エーテライト・居住区から選ぶ
-        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(start, end, half_point_list);
+        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(start, end, passing_point_list);
         let cost_without_zero = cost_and_route_without_zero[0];
         let route_without_zero = cost_and_route_without_zero[1];
         if(cost_with_zero < 0){

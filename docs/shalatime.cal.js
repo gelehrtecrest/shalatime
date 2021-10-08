@@ -262,8 +262,8 @@ $(function() {
                 console.log(tmp_point_list);
                 let return_start_to_point_cost = calOrGetRouteCost([start, point]);
                 let return_point_to_end_cost_and_route = getBest2PointRouteWithoutZero(point, end, tmp_point_list, deep);
-                console.log(return_cost_and_route);
                 let return_start_to_point_to_end_cost = return_start_to_point_cost + return_point_to_end_cost_and_route[0];
+                console.log(return_start_to_point_to_end_cost);
                 if(tmp_cost < 0){
                     tmp_route = return_point_to_end_cost_and_route[1].unshift(start);
                     tmp_cost = return_start_to_point_to_end_cost;

@@ -146,16 +146,18 @@ $(function() {
     
     // 到着点の取得
     function getPassPoints(){
-        return $('input[name=aetheryte-pass]:checked').attr('id');
+        let ids = [];
+        $('input[name=aetheryte-pass]:checked').each(function(){
+            ids.push($(this).attr('id'));
+        });
+        return ids;
     }
     function getPassPointsNamelist(){
         let ids = getPassPoints();
         let str_list = []
         console.log(ids);
-        // 一旦仮に空配列を返す
-        return [];
         ids.forEach(function(id){
-            str_list.push(get_aetheryte_name(delete_suffix()));
+            str_list.push(get_aetheryte_name(delete_suffix(id)));
         });
         return str_list;
     }
@@ -236,10 +238,8 @@ $(function() {
     const zero_suffix = '-half';
     const half_suffix = '-zero';
     $('input').change(function() {
-        let list = $('input[name=aetheryte-setting]:checked');
-        console.log(list);
-        list.forEach(function(input){
-            let id = input.attr('id');
+        $('input[name=aetheryte-setting]:checked').each(function(){
+            let id = $(this).attr('id');
             console.log(id);
             // 無料エーテライトの場合
             if (id.indexOf(zero_suffix) != -1) {

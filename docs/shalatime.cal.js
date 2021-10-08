@@ -245,8 +245,6 @@ $(function() {
     });
     // リストが両方とも空配列の場合は、リストが作られていないと判断する
     function is_create_zero_or_half_cost_list(){
-        console.log(zero_point_list.length);
-        console.log(half_point_list.length);
         if(zero_point_list.length == 0 && half_point_list.length == 0){
             return false;
         }
@@ -258,7 +256,6 @@ $(function() {
         half_point_list = [];
         $('input[name=aetheryte-setting]:checked').each(function(){
             let id = $(this).attr('id');
-            console.log(id);
             // 無料エーテライトの場合
             if (id.indexOf(zero_suffix) != -1) {
                 // 接尾辞を抜いて、idを保存
@@ -270,16 +267,10 @@ $(function() {
                 half_point_list.push(delete_suffix(id));
             }
         });
-        console.log("create------");
-        console.log(zero_point_list);
-        console.log(half_point_list);
     }
 
     // 無料・半額のチェックコスト
     function zero_or_half_cost(raw_cost, point){
-        console.log("list------------");
-        console.log(zero_point_list);
-        console.log(half_point_list);
         // 無料に含まれていたら
         if (zero_point_list.indexOf(point) !== -1) {
             return 0;

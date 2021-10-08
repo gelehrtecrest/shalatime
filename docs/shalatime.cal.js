@@ -266,6 +266,7 @@ $(function() {
                 console.log(return_start_to_point_to_end_cost);
                 console.log(return_point_to_end_cost_and_route);
                 let return_route = return_point_to_end_cost_and_route[1];
+                console.log(return_route);
                 if(tmp_cost < 0){
                     tmp_route = return_route.unshift(start);
                     tmp_cost = return_start_to_point_to_end_cost;
@@ -275,6 +276,7 @@ $(function() {
                         tmp_cost = return_start_to_point_to_end_cost;
                     }
                 }
+                console.log(tmp_route);
             });
         }
         console.log("getBest2PointRouteWithoutZero result-----------------------------");

@@ -280,7 +280,7 @@ $(function() {
         console.log(tmp_cost_without_point);
         console.log(tmp_route);
         // pointリストから選ばない方がコストが少ない場合
-        if(tmp_cost < 0 || tmp_cost_without_point < tmp_cost_and_route[0]){
+        if(tmp_cost < 0 || tmp_cost_without_point < tmp_cost){
             return [tmp_cost_without_point, [start, end]];
         }
         // pointリストから選んだほうがコストが少ない場合

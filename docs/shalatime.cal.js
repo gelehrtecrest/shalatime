@@ -17,6 +17,8 @@ const filecsv_goodvalue_point_list_name = 'goodvalue_point_list.csv';
 // Twitterの定型文
 const twitter_str_prefix = 'https://twitter.com/intent/tweet?text=';
 const twitter_str_suffix = '%20%23シャーレタイム%20https%3A%2F%2Fgelehrtecrest.github.io%2Fshalatime%2F';
+// 深さを1とする
+const deep_start_to_end = 1;
 
 $(function() {
     var all_travel_cost_table;
@@ -144,9 +146,15 @@ $(function() {
 
         // 実行
         // 巡回するルート一覧を出す
-        let route_all = getAllRoute(start, end, passlist);
+        let route_all_count = getAllRoute(start, end, passlist);
         // 各ルートを巡回し、最適なルートを探す
-        travelingAllRoute(route_all);
+        travelingAllRoute(route_all_count[0]);
+
+        // 一時的に表示上出す
+        routenum_all = route_all_count[1];
+        routenum_all = route_all_count[1];
+        $("#routeallnum").val(routenum_all);
+        $("#routenum").val(routenum_cal);
     }
 
 
@@ -187,9 +195,9 @@ $(function() {
     function getAllRoute(start, end, passlist){
         let route_list = [];
         // ひとまず2点間のルートだけ
-        let route = getBest2PointRoute(start, end);
-        route_list.push(route);
-        return route_list;
+        let route_count = getBest2PointRoute(start, end);
+        route_list.push(route_count[0]);
+        return [route_list, route_count[1]];
     }
 
     // 2点間での移動でベストなルートを検索する
@@ -226,22 +234,22 @@ $(function() {
         }
 
         // 無料エーテライトに立ち寄らないなら、半額エーテライト・居住区から選ぶ
-        // 深さを1とする
-        let deep = 1;
-        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(start, end, passing_point_list, deep);
+        let cost_and_route_without_zero = getBest2PointRouteWithoutZero(start, end, passing_point_list, deep_start_to_end, 0);
         let cost_without_zero = cost_and_route_without_zero[0];
         let route_without_zero = cost_and_route_without_zero[1];
+        let count = cost_and_route_without_zero[2];
         if(cost_with_zero < 0){
-            return route_without_zero;
+            return [route_without_zero, count];
         } else {
             if(cost_with_zero > cost_without_zero){
-                return route_without_zero;
+                return [route_without_zero, count];
             }
         }
-        return route_with_zero;
+        return [route_with_zero, count];
     }
 
-    function getBest2PointRouteWithoutZero(start, end, point_list, deep){
+    function getBest2PointRouteWithoutZero(start, end, point_list, deep, count){
+        count++;
         console.log("getBest2PointRouteWithoutZero-----------------------------");
         console.log(start);
         console.log(end);
@@ -261,11 +269,12 @@ $(function() {
                 console.log(point);
                 console.log(tmp_point_list);
                 let return_start_to_point_cost = calOrGetRouteCost([start, point]);
-                let return_point_to_end_cost_and_route = getBest2PointRouteWithoutZero(point, end, tmp_point_list, deep);
+                let return_point_to_end_cost_and_route = getBest2PointRouteWithoutZero(point, end, tmp_point_list, deep, count);
                 let return_start_to_point_to_end_cost = return_start_to_point_cost + return_point_to_end_cost_and_route[0];
                 console.log(return_start_to_point_to_end_cost);
                 console.log(return_point_to_end_cost_and_route);
                 let return_route = return_point_to_end_cost_and_route[1];
+                count = count + return_point_to_end_cost_and_route[2];
                 return_route.unshift(start)
                 console.log(return_route);
                 if(tmp_cost < 0){
@@ -286,10 +295,10 @@ $(function() {
         console.log(tmp_route);
         // pointリストから選ばない方がコストが少ない場合
         if(tmp_cost < 0 || tmp_cost_without_point < tmp_cost){
-            return [tmp_cost_without_point, [start, end]];
+            return [tmp_cost_without_point, [start, end], count];
         }
         // pointリストから選んだほうがコストが少ない場合
-        return [tmp_cost, tmp_route];
+        return [tmp_cost, tmp_route, count];
     }
 
     // 配列から、含まれている要素を削除する

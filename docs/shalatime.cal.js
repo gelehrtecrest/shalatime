@@ -217,6 +217,10 @@ $(function() {
     }
 
     function getBest2PointRouteWithoutZero(start, end, point_list){
+        console.log("getBest2PointRouteWithoutZero-----------------------------");
+        console.log(start);
+        console.log(end);
+        console.log(point_list);
         // point_listから選ばない場合
         let tmp_cost_without_point = calOrGetRouteCost([start, end]);
 
@@ -238,7 +242,10 @@ $(function() {
                 }
             }
         });
-
+        console.log("getBest2PointRouteWithoutZero result-----------------------------");
+        console.log(tmp_cost);
+        console.log(tmp_cost_without_point);
+        console.log(tmp_cost_and_route);
         // pointリストから選ばない方がコストが少ない場合
         if(tmp_cost < 0 || tmp_cost_without_point < tmp_cost_and_route[0]){
             return [tmp_cost_without_point, [start, end]];

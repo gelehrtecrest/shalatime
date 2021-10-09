@@ -76,21 +76,26 @@ $(function() {
     // 居住区などの寄り道リストのうち、有効もしくは何も設定しないidを返す
     function get_goodvalue_point_list(){
         let return_list = [];
+        console.log("-----------------------------");
         goodvalue_point_list.forEach(function(goodvalue_point){
             let goodvalue_id = goodvalue_point + id_goodvalue_suffix;
+            console.log(goodvalue_id);
+            console.log($(goodvalue_id).length);
             if($(goodvalue_id).length){
                 // 設定がある時
                 if ($(goodvalue_id).prop("checked") == true) {
                     // 有効な時
+                    console.log("valid");
                     return_list.push(goodvalue_point);
                 }
             } else {
                 // 設定がないときは有効とする
+                console.log("null");
                 return_list.push(goodvalue_point);
-            }     
+            }
+            console.log(return_list);
         });
         return return_list;
-
     }
 
     // 計算ボタン

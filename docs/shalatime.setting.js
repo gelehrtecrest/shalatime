@@ -5,6 +5,7 @@ const id_suffix = [
     '-free',
     '-half',
     '-homepoint',
+    '-valid',
 ];
 
 const yes = "YES";

@@ -8,6 +8,7 @@ const id_suffix = [
     '-homepoint',
 ];
 */
+const id_goodvalue_suffix = '-valid';
 
 // ファイル名
 const filecsv_aetheryte_name = 'aetheryte_id_list.csv';
@@ -71,6 +72,25 @@ $(function() {
         csv.forEach(function(point){
             goodvalue_point_list.push(point[1]);
         });
+    }
+    // 居住区などの寄り道リストのうち、有効もしくは何も設定しないidを返す
+    function get_goodvalue_point_list(){
+        let return_list = [];
+        goodvalue_point_list.forEach(function(goodvalue_point){
+            let goodvalue_id = goodvalue_point + id_goodvalue_suffix;
+            if($(goodvalue_id).length){
+                // 設定がある時
+                if ($(goodvalue_id).prop("checked") == true) {
+                    // 有効な時
+                    return_list.push(goodvalue_point);
+                }
+            } else {
+                // 設定がないときは有効とする
+                return_list.push(goodvalue_point);
+            }     
+        });
+        return return_list;
+
     }
 
     // 計算ボタン
@@ -209,7 +229,7 @@ $(function() {
         let route = [];
 
         // 無料以外で立ち寄るところは、安いところだけ
-        let passing_point_list = half_point_list.concat(goodvalue_point_list);
+        let passing_point_list = half_point_list.concat(get_goodvalue_point_list());
         // 無料に立ち寄るとしたら１箇所だけ
         zero_point_list.forEach(function(zero_point){
             let cost_and_route = getBest2PointRouteWithoutZero(zero_point, end, passing_point_list);

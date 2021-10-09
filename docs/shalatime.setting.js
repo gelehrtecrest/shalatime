@@ -8,6 +8,12 @@ const id_suffix = [
     '-valid',
 ];
 
+const id_suffix_start_end_pass = [
+    '-start',
+    '-end',
+    '-pass',
+];
+
 const yes = "YES";
 const no = "NO";
 
@@ -75,14 +81,36 @@ $(function() {
     }
 
 
+    // 出発・到着・通過点の設定を消す
+    $('#buttoncheckreset-start-end-pass').on('click', function() {
+        // 設定を削除する
+        $.get(filecsv_aetheryte, resetStartEndPassCsv, 'text');
+        // その後、localStorageに格納する
+        local_storage_function();
+    });
+    function resetStartEndPassCsv(data) {
+        let csv = $.csv.toArrays(data);
+        //一行目は見出しなので削除
+        csv.shift();
+        $(csv).each(function(i) {
+            let id = this[1].toString();
+            id_suffix_start_end_pass.forEach(function(suffix){
+                $('#' + id + suffix).prop('checked', false);
+            });
+        });
+    }
+
     // localStorageに情報を格納する
     $('input').change(function() {
+        local_storage_function()
+    });
+    function local_storage_function() {
         if ($("#setting_local_storage").prop("checked") == true) {
             local_storage_all_set();
         } else {
             localStorage.clear();
         }
-    });
+    }
 
     // localStorageに情報を格納
     function local_storage_all_set(){

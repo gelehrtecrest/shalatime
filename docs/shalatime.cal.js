@@ -78,7 +78,7 @@ $(function() {
         let return_list = [];
         console.log("-----------------------------");
         goodvalue_point_list.forEach(function(goodvalue_point){
-            let goodvalue_id = goodvalue_point + id_goodvalue_suffix;
+            let goodvalue_id = '#' + goodvalue_point + id_goodvalue_suffix;
             console.log(goodvalue_id);
             console.log($(goodvalue_id).length);
             if($(goodvalue_id).length){

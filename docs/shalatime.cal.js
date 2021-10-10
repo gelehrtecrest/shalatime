@@ -256,6 +256,8 @@ $(function() {
         // 一巡のルートからdpを検索し、ルートを求める
         let key_route = passlist.concat(start, end);
         console.log("-------------------------------------------");
+        console.log(dp_route_to_cost);
+        console.log(dp_route);
         console.log(route_count);
         console.log(passlist);
         console.log(key_route);

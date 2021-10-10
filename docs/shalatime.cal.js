@@ -167,6 +167,8 @@ $(function() {
         let route_all_count = getAllRoute(start, end, passlist);
         console.log("route_all_count--------------------");
         console.log(route_all_count);
+        console.log(dp_route_to_cost);
+        console.log(dp_route);
         // 各ルートを巡回し、最適なルートを探す
         travelingAllRoute(route_all_count[0]);
 

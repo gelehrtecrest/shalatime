@@ -283,7 +283,7 @@ $(function() {
         let return_route = [];
         let return_count = 0;
         // startからpasslistを通ってendに向かうルートの値のキー
-        let key_start_passlist_end = [start].concat([passlist, end]); 
+        let key_start_passlist_end = [start].concat(passlist, end); 
 
         // 通過点リストから1つ取り出す
         passlist.forEach(function(pass){
@@ -341,7 +341,7 @@ $(function() {
             }
 
             // 次に、passからendまでの最安ルート・コストを計算する
-            let pass_to_end_list = passlist.concat([end]);
+            let pass_to_end_list = passlist.concat(end);
             let dp_cost_pass_to_end = get_dp_route_to_cost(pass_to_end_list);
             let pass_to_end_route_count_cost;
             if(dp_cost_pass_to_end !== undefined){

@@ -385,7 +385,8 @@ $(function() {
                 console.log("test1----------------------");
                 console.log(start_to_pass_route);
                 console.log(tmp_route_without_pass);
-                //tmp_route_without_pass.shift();
+                tmp_route_without_pass.pop();
+                console.log(tmp_route_without_pass);
                 return_route = start_to_pass_route.concat(tmp_route_without_pass);
             } else {
                 if(return_cost > start_to_pass_cost + pass_to_end_route_count_cost[2]){
@@ -395,7 +396,8 @@ $(function() {
                     console.log("test2----------------------");
                     console.log(start_to_pass_route);
                     console.log(tmp_route_without_pass);
-                    //tmp_route_without_pass.shift();
+                    tmp_route_without_pass.pop();
+                    console.log(tmp_route_without_pass);
                     return_route = start_to_pass_route.concat(tmp_route_without_pass);
                 }
             }

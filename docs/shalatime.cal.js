@@ -88,7 +88,6 @@ $(function() {
                 // 設定がないときは有効とする
                 return_list.push(goodvalue_point);
             }
-            console.log(return_list);
         });
         return return_list;
     }
@@ -215,7 +214,7 @@ $(function() {
         dp_route_to_cost = {}
     }
     function set_dp_route_to_cost(list, cost){
-        let key = get_dpKey(list);
+        let key = get_dp_key(list);
         dp_route_to_cost[key] = cost;
     }
     function get_dp_route_to_cost(list){

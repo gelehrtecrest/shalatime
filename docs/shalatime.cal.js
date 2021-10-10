@@ -385,11 +385,17 @@ $(function() {
             console.log(start_to_pass_route);
             if(return_cost < 0){
                 return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
-                return_route = start_to_pass_route.concat(pass_to_end_route_count_cost[0]);
+                // pass要素だけ消す
+                let tmp_route_without_pass = pass_to_end_route_count_cost[0];
+                tmp_route_without_pass.shift();
+                return_route = start_to_pass_route.concat(tmp_route_without_pass);
             } else {
                 if(return_cost > start_to_pass_cost + pass_to_end_route_count_cost[2]){
                     return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
-                    return_route = start_to_pass_route.concat(pass_to_end_route_count_cost[0]);
+                    // pass要素だけ消す
+                    let tmp_route_without_pass = pass_to_end_route_count_cost[0];
+                    tmp_route_without_pass.shift();
+                    return_route = start_to_pass_route.concat(tmp_route_without_pass);
                 }
             }
             // 計算した数の追加

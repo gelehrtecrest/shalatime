@@ -165,6 +165,8 @@ $(function() {
         // 実行
         // 巡回するルート一覧を出す
         let route_all_count = getAllRoute(start, end, passlist);
+        console.log("route_all_count--------------------");
+        console.log(route_all_count);
         // 各ルートを巡回し、最適なルートを探す
         travelingAllRoute(route_all_count[0]);
 

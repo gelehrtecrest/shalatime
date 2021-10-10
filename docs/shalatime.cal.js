@@ -278,6 +278,9 @@ $(function() {
                 // なければ、計算する
                 let route_count_cost = getBest2PointRoute(start, end);
                 // dpに入れる
+                console.log("set_dp_route_to_cost test1---------------");
+                console.log([start, end]);
+                console.log(route_count_cost);
                 set_dp_route_to_cost([start, end], route_count_cost[2]);
                 return route_count_cost;
             }
@@ -343,6 +346,10 @@ $(function() {
                     tmp_route = start_to_pass_route_count_cost[0];
                     tmp_count = start_to_pass_route_count_cost[1];
                     // dpに入れる
+                    console.log("set_dp_route_to_cost test2---------------");
+                    console.log([start, pass]);
+                    console.log(tmp_cost);
+                    console.log(tmp_route);
                     set_dp_route_to_cost([start, pass], tmp_cost);
                     set_dp_route_to_route([start, pass], tmp_route);
                 }
@@ -374,6 +381,9 @@ $(function() {
             return_count = return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
         });
         // dpを更新
+        console.log("set_dp_route_to_cost test3---------------");
+        console.log(key_start_passlist_end);
+        console.log(return_cost);
         set_dp_route_to_cost(key_start_passlist_end, return_cost);
         set_dp_route_to_route(key_start_passlist_end, return_route);
         return [return_route, return_count, return_cost];

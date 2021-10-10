@@ -284,6 +284,7 @@ $(function() {
                 console.log([start, end]);
                 console.log(route_count_cost);
                 set_dp_route_to_cost([start, end], route_count_cost[2]);
+                set_dp_route_to_route([start, end], route_count_cost[0]);
                 return route_count_cost;
             }
         }

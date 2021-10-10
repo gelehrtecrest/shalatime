@@ -468,6 +468,8 @@ $(function() {
 
     // 各ルートを巡回し、最適なルートを探す
     function travelingAllRoute(route_all){
+        console.log("traveling-------------");
+        console.log(route_all);
         // 全ルート数
         routenum_all = route_all.length;
         // 計算したルート数

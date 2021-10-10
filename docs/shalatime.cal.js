@@ -352,16 +352,16 @@ $(function() {
                 } else {
                     // dpに入っていない場合
                     let start_to_pass_route_count_cost = getBest2PointRoute(start, pass);
-                    tmp_cost = start_to_pass_route_count_cost[2];
-                    tmp_route = start_to_pass_route_count_cost[0];
-                    tmp_count = start_to_pass_route_count_cost[1];
+                    start_to_pass_cost = start_to_pass_route_count_cost[2];
+                    start_to_pass_route = start_to_pass_route_count_cost[0];
+                    start_to_pass_count = start_to_pass_route_count_cost[1];
                     // dpに入れる
                     console.log("set_dp_route_to_cost test2---------------");
                     console.log([start, pass]);
                     console.log(tmp_cost);
                     console.log(tmp_route);
-                    set_dp_route_to_cost([start, pass], tmp_cost);
-                    set_dp_route_to_route([start, pass], tmp_route);
+                    set_dp_route_to_cost([start, pass], start_to_pass_cost);
+                    set_dp_route_to_route([start, pass], start_to_pass_route);
                 }
             }
 
@@ -381,6 +381,8 @@ $(function() {
             console.log("return_cost-----------------");
             console.log(start_to_pass_cost);
             console.log(pass_to_end_route_count_cost);
+            console.log(start_to_pass_cost);
+            console.log(start_to_pass_route);
             if(return_cost < 0){
                 return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
                 return_route = start_to_pass_route.concat(pass_to_end_route_count_cost[0]);

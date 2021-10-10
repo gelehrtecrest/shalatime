@@ -547,7 +547,7 @@ $(function() {
                 str = get_aetheryte_name(point);
                 old_point = point;
             } else {
-                str = str + " →(" + calOrGetRouteCost([old_point, point]) + ")→" + get_aetheryte_name(point) + get_zero_or_half_name(point);
+                str = str + " →(" + calOrGetRouteCost([old_point, point]) + ")→ " + get_aetheryte_name(point) + get_zero_or_half_name(point);
             }
         });
 

@@ -210,19 +210,31 @@ $(function() {
     
     // 動的計画法のコスト確保
     let dp_route_to_cost = {};
+    let dp_route = {}
     function reset_dp_route_to_cost(){
         dp_route_to_cost = {}
+        dp_route = {};
     }
     function set_dp_route_to_cost(list, cost){
         let key = get_dp_key(list);
         dp_route_to_cost[key] = cost;
     }
+    function set_dp_route_to_route(list, route){
+        let key = get_dp_key(list);
+        dp_route[key] = route;
+    }
     function get_dp_route_to_cost(list){
         let key = get_dp_key(list);
         return dp_route_to_cost[key];
     }
+    function get_dp_route(list){
+        let key = get_dp_key(list);
+        return dp_route[key];
+    }
     function get_dp_key(list){
         let key = 'key-';
+        // リストを辞書順にソートする
+        list.sort();
         list.forEach(function(point){
             key = key + delete_suffix(point);
         });
@@ -236,16 +248,16 @@ $(function() {
         reset_dp_route_to_cost();
 
         // 通過点のリストから1つ取り、現在点から通過点の最安ルートを探す
-        let route_count = sub_getAllRoute(start, end, passlist);
-
-        // let route_count = getBest2PointRoute(start, end);
-        route_list.push(route_count[0]);
+        let route_count = sub_getAllRoute(start, end, passlist, [start]);
+        // 一巡のルートからdpを検索し、ルートを求める
+        let key_route = passlist.concat(start, end);
+        route_list = get_dp_route(key_route);
         return [route_list, route_count[1]];
     }
 
     // 通過点のリストから1つ取り、現在点から通過点の最安ルートを探す
     // passlistが空白の時、startからendへの最安ルートを求める
-    function sub_getAllRoute(start, end, passlist){
+    function sub_getAllRoute(start, end, passlist, passedlist){
         if(passlist == []){
             // dp上に計算した値があったら
             let cost = get_dp_route_to_cost([start, end]);
@@ -255,14 +267,106 @@ $(function() {
             } else {
                 // なければ、計算する
                 let route_count_cost = getBest2PointRoute(start, end);
+                // dpに入れる
                 set_dp_route_to_cost([start, end], route_count_cost[2]);
                 return route_count_cost;
             }
         }
-        // 一旦、passlistが[]だけの設計を
-        let route_count_cost = getBest2PointRoute(start, end);
-        set_dp_route_to_cost([start, end], route_count_cost[2]);
-        return route_count_cost;
+        // 通過点リストが空じゃない場合
+        // 通過点リストを確保しておく
+        let tmp_passlist = passlist;
+
+        // 返り値のルートとコストの確保
+        let return_cost = -1;
+        let return_route = [];
+        let return_count = 0;
+        // startからpasslistを通ってendに向かうルートの値のキー
+        let key_start_passlist_end = [start].concat([passlist, end]); 
+
+        // 通過点リストから1つ取り出す
+        passlist.forEach(function(pass){
+            // まず、通過した点とpassの値まで通過したところまでの最安ルート・コストを計算する
+            let start_to_pass_cost;
+            let start_to_pass_route;
+            let start_to_pass_count;
+
+            // 既に通過した点リストを確保しておく
+            let tmp_passedlist = passedlist;
+            // 既に通過した点リストにpassを追加する
+            tmp_passedlist.push(pass);
+            // 通過点リストから、選ばれていない通過点をまとめたリストを作る
+            let remaining_passlist = [];
+            tmp_passlist.forEach(function(tmp_pass){
+                if(pass != tmp_pass){
+                    remaining_passlist.push(tmp_pass);
+                }
+            });
+                
+            let dp_cost = get_dp_route_to_cost(tmp_passedlist);
+            if(dp_cost !== undefined){
+                // dp上に既に通過点がある場合
+                // dp上にある値がstartからpassまでのコストとルートになる
+
+                // 計算は0
+                start_to_pass_count = 0;
+                // ルートはdpから
+                start_to_pass_route = get_dp_route(tmp_passedlist);
+                // コストもdpから
+                start_to_pass_cost = dp_cost;
+            } else {
+                // dp上にまだ通過点がない場合
+
+                // startとpassのコストを計算する
+                let dp_cost_start_to_pass = get_dp_route_to_cost([start, pass]);
+                let tmp_cost;
+                let tmp_route;
+                let tmp_count;
+                if(dp_cost_start_to_pass !== undefined){
+                    // dpに入っている場合
+                    tmp_count = 0;
+                    tmp_route = get_dp_route([start, pass]);
+                    tmp_cost = dp_cost_start_to_pass;
+                } else {
+                    // dpに入っていない場合
+                    let start_to_pass_route_count_cost = getBest2PointRoute(start, pass);
+                    tmp_cost = start_to_pass_route_count_cost[2];
+                    tmp_route = start_to_pass_route_count_cost[0];
+                    tmp_count = start_to_pass_route_count_cost[1];
+                    // dpに入れる
+                    set_dp_route_to_cost([start, pass], tmp_cost);
+                    set_dp_route_to_route([start, pass], tmp_route);
+                }
+            }
+
+            // 次に、passからendまでの最安ルート・コストを計算する
+            let pass_to_end_list = passlist.concat([end]);
+            let dp_cost_pass_to_end = get_dp_route_to_cost(pass_to_end_list);
+            let pass_to_end_route_count_cost;
+            if(dp_cost_pass_to_end !== undefined){
+                // dpにある場合
+                pass_to_end_route_count_cost = [get_dp_route(pass_to_end_list), 0, dp_cost_pass_to_end];
+            } else {
+                // dpにない場合
+                pass_to_end_route_count_cost = sub_getAllRoute(pass, end, remaining_passlist, tmp_passedlist);
+            }
+
+            // startからpasslistを通ってendに向かうルートの値を取得
+            if(return_cost < 0){
+                return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
+                return_route = start_to_pass_route.concat(pass_to_end_route_count_cost[0]);
+            } else {
+                if(return_cost > start_to_pass_cost + pass_to_end_route_count_cost[2]){
+                    return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
+                    return_route = start_to_pass_route.concat(pass_to_end_route_count_cost[0]);
+                }
+            }
+            // 計算した数の追加
+            return_count = return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
+        });
+        // dpを更新
+        set_dp_route_to_cost(key_start_passlist_end, return_cost);
+        set_dp_route_to_route(key_start_passlist_end, return_route);
+        return [return_route, return_count, return_cost];
     }
 
     // 2点間での移動でベストなルートを検索する

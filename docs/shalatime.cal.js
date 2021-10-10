@@ -169,8 +169,12 @@ $(function() {
         console.log(route_all_count);
         console.log(dp_route_to_cost);
         console.log(dp_route);
-        // 各ルートを巡回し、最適なルートを探す
-        travelingAllRoute(route_all_count[0]);
+        // 全ルート数
+        routenum_all = route_all_count[1];
+        // 計算したルート数
+        routenum_cal = route_all_count[1];
+        // 最適なルートを表示
+        travelingResult(route_all_count[0]);
 
         // 一時的に表示上出す
         routenum_cal = route_all_count[1];
@@ -493,14 +497,11 @@ $(function() {
         return return_list;
     }
 
-    // 各ルートを巡回し、最適なルートを探す
-    function travelingAllRoute(route){
+    // 結果表示
+    function travelingResult(route){
         console.log("traveling-------------");
         console.log(route);
-        // 全ルート数
-        routenum_all = route.length;
-        // 計算したルート数
-        routenum_cal = 1;
+
 
         // エーテライトのリストから、ルートのStringを作る
         route_str = toRouteString(route);
@@ -513,7 +514,7 @@ $(function() {
         show_travel_var();
 
         // Twitter文章設定
-        set_tweet_text(toRouteShortString(route_best_list), route_best_gil);
+        set_tweet_text(toRouteShortString(route), route_best_gil);
     }
 
     // エーテライトのリストから、ルートのStringを作る

@@ -341,14 +341,11 @@ $(function() {
 
                 // startとpassのコストを計算する
                 let dp_cost_start_to_pass = get_dp_route_to_cost([start, pass]);
-                let tmp_cost;
-                let tmp_route;
-                let tmp_count;
                 if(dp_cost_start_to_pass !== undefined){
                     // dpに入っている場合
-                    tmp_count = 0;
-                    tmp_route = get_dp_route([start, pass]);
-                    tmp_cost = dp_cost_start_to_pass;
+                    start_to_pass_count = 0;
+                    start_to_pass_route = get_dp_route([start, pass]);
+                    start_to_pass_cost = dp_cost_start_to_pass;
                 } else {
                     // dpに入っていない場合
                     let start_to_pass_route_count_cost = getBest2PointRoute(start, pass);
@@ -358,8 +355,6 @@ $(function() {
                     // dpに入れる
                     console.log("set_dp_route_to_cost test2---------------");
                     console.log([start, pass]);
-                    console.log(tmp_cost);
-                    console.log(tmp_route);
                     set_dp_route_to_cost([start, pass], start_to_pass_cost);
                     set_dp_route_to_route([start, pass], start_to_pass_route);
                 }
@@ -387,14 +382,20 @@ $(function() {
                 return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
                 // pass要素だけ消す
                 let tmp_route_without_pass = pass_to_end_route_count_cost[0];
-                tmp_route_without_pass.shift();
+                console.log("test1----------------------");
+                console.log(start_to_pass_route);
+                console.log(tmp_route_without_pass);
+                //tmp_route_without_pass.shift();
                 return_route = start_to_pass_route.concat(tmp_route_without_pass);
             } else {
                 if(return_cost > start_to_pass_cost + pass_to_end_route_count_cost[2]){
                     return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
                     // pass要素だけ消す
                     let tmp_route_without_pass = pass_to_end_route_count_cost[0];
-                    tmp_route_without_pass.shift();
+                    console.log("test2----------------------");
+                    console.log(start_to_pass_route);
+                    console.log(tmp_route_without_pass);
+                    //tmp_route_without_pass.shift();
                     return_route = start_to_pass_route.concat(tmp_route_without_pass);
                 }
             }

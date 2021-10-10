@@ -494,17 +494,14 @@ $(function() {
     }
 
     // 各ルートを巡回し、最適なルートを探す
-    function travelingAllRoute(route_all){
+    function travelingAllRoute(route){
         console.log("traveling-------------");
-        console.log(route_all);
+        console.log(route);
         // 全ルート数
-        routenum_all = route_all.length;
+        routenum_all = route.length;
         // 計算したルート数
         routenum_cal = 1;
 
-        // 現在は一つのルートだけ
-        let route = route_all[0];
-        let route_best_list = route;
         // エーテライトのリストから、ルートのStringを作る
         route_str = toRouteString(route);
         // 現在最安ルートとして確認しているルート

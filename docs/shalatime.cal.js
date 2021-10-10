@@ -161,8 +161,7 @@ $(function() {
             return;
         }
         // 通過点の取得
-        // 現在未実装
-        let passlist = [];
+        let passlist = getPassPoints();
 
         // 実行
         // 巡回するルート一覧を出す
@@ -176,7 +175,6 @@ $(function() {
         $("#routeallnum").val(routenum_all);
         $("#routenum").val(routenum_cal);
     }
-
 
     // 出発点の取得
     function getStartPoint(){
@@ -194,7 +192,7 @@ $(function() {
         return get_aetheryte_short_name(delete_suffix(getEndPoint()));
     }
     
-    // 到着点の取得
+
     function getPassPoints(){
         let ids = [];
         $('input[name=aetheryte-pass]:checked').each(function(){
@@ -211,16 +209,65 @@ $(function() {
         return str_list;
     }
     
+    // 動的計画法のコスト確保
+    let dp_route_to_cost = {};
+    function reset_dp_route_to_cost(){
+        dp_route_to_cost = {}
+    }
+    function set_dp_route_to_cost(list, cost){
+        let key = get_dpKey(list);
+        dp_route_to_cost[key] = cost;
+    }
+    function get_dp_route_to_cost(list){
+        let key = get_dp_key(list);
+        return dp_route_to_cost[key];
+    }
+    function get_dp_key(list){
+        let key = 'key-';
+        list.forEach(function(point){
+            key = key + delete_suffix(point);
+        });
+        return key;
+    }
+
     // 入力から最適なルートを計算する
     function getAllRoute(start, end, passlist){
         let route_list = [];
-        // ひとまず2点間のルートだけ
-        let route_count = getBest2PointRoute(start, end);
+        // 動的計画法の表をリセット
+        reset_dp_route_to_cost();
+
+        // 通過点のリストから1つ取り、現在点から通過点の最安ルートを探す
+        let route_count = sub_getAllRoute(start, end, passlist);
+
+        // let route_count = getBest2PointRoute(start, end);
         route_list.push(route_count[0]);
         return [route_list, route_count[1]];
     }
 
+    // 通過点のリストから1つ取り、現在点から通過点の最安ルートを探す
+    // passlistが空白の時、startからendへの最安ルートを求める
+    function sub_getAllRoute(start, end, passlist){
+        if(passlist == []){
+            // dp上に計算した値があったら
+            let cost = get_dp_route_to_cost([start, end]);
+            if(cost !== undefined){
+                // そのまま返す
+                return [[start, end], 0, cost];
+            } else {
+                // なければ、計算する
+                let route_count_cost = getBest2PointRoute(start, end);
+                set_dp_route_to_cost([start, end], route_count_cost[2]);
+                return route_count_cost;
+            }
+        }
+        // 一旦、passlistが[]だけの設計を
+        let route_count_cost = getBest2PointRoute(start, end);
+        set_dp_route_to_cost([start, end], route_count_cost[2]);
+        return route_count_cost;
+    }
+
     // 2点間での移動でベストなルートを検索する
+    // 返り値: [ルートのリスト、検索個数、必要なギル]
     function getBest2PointRoute(start, end){
         // 無料エーテライトを立ち寄るなら2点間の間の最初のエーテライト
         // 先に無料エーテライトに立ち寄るルートを考える
@@ -256,13 +303,13 @@ $(function() {
         let route_without_zero = cost_and_route_without_zero[1];
         let count = cost_and_route_without_zero[2];
         if(cost_with_zero < 0){
-            return [route_without_zero, count];
+            return [route_without_zero, count, cost_without_zero];
         } else {
             if(cost_with_zero > cost_without_zero){
-                return [route_without_zero, count];
+                return [route_without_zero, count, cost_without_zero];
             }
         }
-        return [route_with_zero, count];
+        return [route_with_zero, count, cost_with_zero];
     }
 
     function getBest2PointRouteWithoutZero(start, end, point_list, deep, count){

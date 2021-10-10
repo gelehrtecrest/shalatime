@@ -8,6 +8,12 @@ const id_suffix = [
     '-homepoint',
 ];
 */
+const id_suffix_for_dp = [
+    '-pass',
+    '-free',
+    '-half',
+    '-homepoint',
+];
 const id_goodvalue_suffix = '-valid';
 
 // ファイル名
@@ -246,7 +252,7 @@ $(function() {
         // リストを辞書順にソートする
         list.sort();
         list.forEach(function(point){
-            key = key + delete_suffix(point);
+            key = key + delete_suffix_for_dp(point);
         });
         return key;
     }
@@ -534,11 +540,14 @@ $(function() {
         let str = "";
         // とりあえずルートidを並べるだけで仮実装
         // 2つ目以降のエーテライトが無料・半額の場合はその旨も記載
+        // 料金もわかりやすいように
+        let old_point;
         routearr.forEach(function(point){
             if(str == ""){
                 str = get_aetheryte_name(point);
+                old_point = point;
             } else {
-                str = str + " → " + get_aetheryte_name(point) + get_zero_or_half_name(point);
+                str = str + " →(" + calOrGetRouteCost([old_point, point]) + ")→" + get_aetheryte_name(point) + get_zero_or_half_name(point);
             }
         });
 
@@ -664,6 +673,13 @@ $(function() {
     // 接尾リストにあればreplaceで空白に書き換える
     function delete_suffix(str){
         id_suffix.forEach(function(suffix){
+            str = str.replace(suffix, '');
+        });
+        return str;
+    }
+    // dp用
+    function delete_suffix_for_dp(str){
+        id_suffix_for_dp.forEach(function(suffix){
             str = str.replace(suffix, '');
         });
         return str;

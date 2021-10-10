@@ -232,6 +232,8 @@ $(function() {
         return dp_route[key];
     }
     function get_dp_key(list){
+        console.log("get_dp_key-------------------");
+        console.log(list);
         let key = 'key-';
         // リストを辞書順にソートする
         list.sort();

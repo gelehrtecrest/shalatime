@@ -171,10 +171,6 @@ $(function() {
         // 実行
         // 巡回するルート一覧を出す
         let route_all_count = getAllRoute(start, end, passlist);
-        console.log("route_all_count--------------------");
-        console.log(route_all_count);
-        console.log(dp_route_to_cost);
-        console.log(dp_route);
         // 全ルート数
         routenum_all = route_all_count[1];
         // 計算したルート数
@@ -249,8 +245,6 @@ $(function() {
         return dp_route[key];
     }
     function get_dp_key(list){
-        console.log("get_dp_key-------------------");
-        console.log(list);
         let key = 'key-';
         // リストを辞書順にソートする
         list.sort();
@@ -270,12 +264,6 @@ $(function() {
         let route_count = sub_getAllRoute(start, end, passlist, [start]);
         // 一巡のルートからdpを検索し、ルートを求める
         let key_route = passlist.concat(start, end);
-        console.log("-------------------------------------------");
-        console.log(dp_route_to_cost);
-        console.log(dp_route);
-        console.log(route_count);
-        console.log(passlist);
-        console.log(key_route);
         route_list = get_dp_route(key_route);
         return [route_list, route_count[1]];
     }
@@ -293,9 +281,6 @@ $(function() {
                 // なければ、計算する
                 let route_count_cost = getBest2PointRoute(start, end);
                 // dpに入れる
-                console.log("set_dp_route_to_cost test1---------------");
-                console.log([start, end]);
-                console.log(route_count_cost);
                 set_dp_route_to_cost([start, end], route_count_cost[2]);
                 set_dp_route_to_route([start, end], route_count_cost[0]);
                 return route_count_cost;
@@ -312,11 +297,9 @@ $(function() {
         // startからpasslistを通ってendに向かうルートの値のキー
         let key_start_passlist_end = [start].concat(passlist, end); 
 
-        console.log("------------------------");
-        console.log(passlist);
+
         // 通過点リストから1つ取り出す
         passlist.forEach(function(pass){
-            console.log(pass);
             // まず、通過した点とpassの値まで通過したところまでの最安ルート・コストを計算する
             let start_to_pass_cost;
             let start_to_pass_route;
@@ -362,8 +345,6 @@ $(function() {
                     start_to_pass_route = start_to_pass_route_count_cost[0];
                     start_to_pass_count = start_to_pass_route_count_cost[1];
                     // dpに入れる
-                    console.log("set_dp_route_to_cost test2---------------");
-                    console.log([start, pass]);
                     set_dp_route_to_cost([start, pass], start_to_pass_cost);
                     set_dp_route_to_route([start, pass], start_to_pass_route);
                 }
@@ -382,32 +363,18 @@ $(function() {
             }
 
             // startからpasslistを通ってendに向かうルートの値を取得
-            console.log("return_cost-----------------");
-            console.log(start_to_pass_cost);
-            console.log(pass_to_end_route_count_cost);
-            console.log(start_to_pass_cost);
-            console.log(start_to_pass_route);
             if(return_cost < 0){
                 return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
                 // pass要素だけ消す
                 let tmp_route_without_pass = pass_to_end_route_count_cost[0];
-                console.log("test1----------------------");
-                console.log(start_to_pass_route);
-                console.log(tmp_route_without_pass);
                 tmp_route_without_pass.shift();
-                console.log(tmp_route_without_pass);
                 return_route = start_to_pass_route.concat(tmp_route_without_pass);
-                console.log(return_route);
             } else {
                 if(return_cost > start_to_pass_cost + pass_to_end_route_count_cost[2]){
                     return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
                     // pass要素だけ消す
                     let tmp_route_without_pass = pass_to_end_route_count_cost[0];
-                    console.log("test2----------------------");
-                    console.log(start_to_pass_route);
-                    console.log(tmp_route_without_pass);
                     tmp_route_without_pass.shift();
-                    console.log(tmp_route_without_pass);
                     return_route = start_to_pass_route.concat(tmp_route_without_pass);
                 }
             }
@@ -415,9 +382,6 @@ $(function() {
             return_count = return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
         });
         // dpを更新
-        console.log("set_dp_route_to_cost test3---------------");
-        console.log(key_start_passlist_end);
-        console.log(return_cost);
         set_dp_route_to_cost(key_start_passlist_end, return_cost);
         set_dp_route_to_route(key_start_passlist_end, return_route);
         return [return_route, return_count, return_cost];
@@ -520,10 +484,6 @@ $(function() {
 
     // 結果表示
     function travelingResult(route){
-        console.log("traveling-------------");
-        console.log(route);
-
-
         // エーテライトのリストから、ルートのStringを作る
         route_str = toRouteString(route);
         // 現在最安ルートとして確認しているルート

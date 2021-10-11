@@ -233,9 +233,13 @@ $(function() {
         console.log("set_dp_route_to_route-----------------------------------------");
         console.log(list);
         console.log(route);
+        let tmp_route = [];
+        route.forEach(function(point){
+            tmp_route.push(point);
+        });
         let key = get_dp_key(list);
         console.log(key);
-        dp_route[key] = route;
+        dp_route[key] = tmp_route;
     }
     function get_dp_route_to_cost(list){
         let key = get_dp_key(list);

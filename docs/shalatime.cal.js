@@ -247,15 +247,11 @@ $(function() {
     function get_dp_key(list){
         let key = 'key';
         // リストを辞書順にソートする
-        console.log("|||||||||||||||||||||||sort");
-        console.log(list);
         let tmp_list = [];
         list.forEach(function(point){
             tmp_list.push(point);
         });
         tmp_list.sort();
-        console.log(list);
-        console.log(tmp_list);
         tmp_list.forEach(function(point){
             key = key + "__" + delete_suffix_for_dp(point);
         });

@@ -230,6 +230,9 @@ $(function() {
         dp_route = {};
     }
     function set_dp_route_to_cost(list, cost){
+        console.log("set_dp_route_to_cost-----------------------------------------");
+        console.log(list);
+        console.log(cost);
         let key = get_dp_key(list);
         dp_route_to_cost[key] = cost;
     }
@@ -306,6 +309,8 @@ $(function() {
         let return_cost = -1;
         let return_route = [];
         let return_count = 0;
+        // forEachで回すためのtmp
+        let tmp_return_cost = -1;
         // startからpasslistを通ってendに向かうルートの値のキー
         let key_start_passlist_end = [start].concat(passlist, end); 
 
@@ -384,8 +389,8 @@ $(function() {
             console.log(pass_to_end_route_count_cost);
             console.log(start_to_pass_cost);
             console.log(start_to_pass_route);
-            if(return_cost < 0){
-                return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
+            if(tmp_return_cost < 0){
+                tmp_return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
                 // pass要素だけ消す
                 let tmp_route_without_pass = pass_to_end_route_count_cost[0];
                 console.log("test1----------------------");
@@ -396,8 +401,8 @@ $(function() {
                 return_route = start_to_pass_route.concat(tmp_route_without_pass);
                 console.log(return_route);
             } else {
-                if(return_cost > start_to_pass_cost + pass_to_end_route_count_cost[2]){
-                    return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
+                if(tmp_return_cost > start_to_pass_cost + pass_to_end_route_count_cost[2]){
+                    tmp_return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
                     // pass要素だけ消す
                     let tmp_route_without_pass = pass_to_end_route_count_cost[0];
                     console.log("test2----------------------");
@@ -409,7 +414,7 @@ $(function() {
                 }
             }
             // 計算した数の追加
-            return_count = return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
+            return_count = tmp_return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
         });
         // dpを更新
         console.log("set_dp_route_to_cost test3---------------");

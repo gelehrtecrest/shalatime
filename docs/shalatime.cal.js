@@ -311,13 +311,18 @@ $(function() {
 
         // 通過点リストから1つ取り出す
         passlist.forEach(function(pass){
+            console.log("forEach==============================");
+            console.log(pass);
             // まず、通過した点とpassの値まで通過したところまでの最安ルート・コストを計算する
             let start_to_pass_cost;
             let start_to_pass_route;
             let start_to_pass_count;
 
             // 既に通過した点リストを確保しておく
-            let tmp_passedlist = passedlist;
+            let tmp_passedlist = [];
+            passedlist.forEach(function(p){
+                tmp_passedlist.push(p);
+            })
             // 既に通過した点リストにpassを追加する
             tmp_passedlist.push(pass);
             // 通過点リストから、選ばれていない通過点をまとめたリストを作る
@@ -327,7 +332,6 @@ $(function() {
                     remaining_passlist.push(tmp_pass);
                 }
             });
-                
             let dp_cost = get_dp_route_to_cost(tmp_passedlist);
             if(dp_cost !== undefined){
                 // dp上に既に通過点がある場合

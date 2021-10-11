@@ -374,13 +374,19 @@ $(function() {
             let pass_to_end_list = passlist.concat(end);
             let dp_cost_pass_to_end = get_dp_route_to_cost(pass_to_end_list);
             let pass_to_end_route_count_cost;
+            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             if(dp_cost_pass_to_end !== undefined){
+                console.log("1~~~~~~~~~~~~~~~~~");
+                console.log(pass_to_end_list);
                 // dpにある場合
                 pass_to_end_route_count_cost = [get_dp_route(pass_to_end_list), 0, dp_cost_pass_to_end];
+                console.log(pass_to_end_list);
             } else {
+                console.log("2~~~~~~~~~~~~~~~~~");
                 // dpにない場合
                 pass_to_end_route_count_cost = sub_getAllRoute(pass, end, remaining_passlist, tmp_passedlist);
             }
+            console.log(pass_to_end_route_count_cost[0]);
 
             // startからpasslistを通ってendに向かうルートの値を取得
             if(return_cost < 0){

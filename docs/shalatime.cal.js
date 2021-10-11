@@ -316,14 +316,10 @@ $(function() {
             let start_to_pass_route;
             let start_to_pass_count;
 
-            console.log("^^^^^^^^^^^^^^^^^^^^");
-            console.log(passedlist);
-            console.log(pass);
             // 既に通過した点リストを確保しておく
             let tmp_passedlist = passedlist;
             // 既に通過した点リストにpassを追加する
             tmp_passedlist.push(pass);
-            console.log(tmp_passedlist);
             // 通過点リストから、選ばれていない通過点をまとめたリストを作る
             let remaining_passlist = [];
             tmp_passlist.forEach(function(tmp_pass){

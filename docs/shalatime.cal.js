@@ -332,6 +332,11 @@ $(function() {
                     remaining_passlist.push(tmp_pass);
                 }
             });
+            console.log(tmp_passedlist);
+            console.log(remaining_passlist);
+            console.log("==============================");
+
+
             let dp_cost = get_dp_route_to_cost(tmp_passedlist);
             if(dp_cost !== undefined){
                 // dp上に既に通過点がある場合

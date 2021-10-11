@@ -226,13 +226,13 @@ $(function() {
         dp_route = {};
     }
     function set_dp_route_to_cost(list, cost){
-        console.log("set_dp_route_to_cost-----------------------------------------");
-        console.log(list);
-        console.log(cost);
         let key = get_dp_key(list);
         dp_route_to_cost[key] = cost;
     }
     function set_dp_route_to_route(list, route){
+        console.log("set_dp_route_to_route-----------------------------------------");
+        console.log(list);
+        console.log(route);
         let key = get_dp_key(list);
         dp_route[key] = route;
     }

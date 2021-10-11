@@ -245,11 +245,15 @@ $(function() {
         return dp_route[key];
     }
     function get_dp_key(list){
-        let key = 'key-';
+        let key = 'key';
         // リストを辞書順にソートする
-        list.sort();
-        list.forEach(function(point){
-            key = key + delete_suffix_for_dp(point);
+        let tmp_list = list;
+        tmp_list.sort();
+        console.log("|||||||||||||||||||||||sort");
+        console.log(list);
+        console.log(tmp_list);
+        tmp_list.forEach(function(point){
+            key = key + "__" + delete_suffix_for_dp(point);
         });
         return key;
     }

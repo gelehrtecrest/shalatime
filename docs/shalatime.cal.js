@@ -271,6 +271,13 @@ $(function() {
     // 通過点のリストから1つ取り、現在点から通過点の最安ルートを探す
     // passlistが空白の時、startからendへの最安ルートを求める
     function sub_getAllRoute(start, end, passlist, passedlist){
+        console.log("sub_getAllRoute----------------");
+        console.log(start);
+        console.log(end);
+        console.log(passlist);
+        console.log(passedlist);
+
+        
         if(passlist.length <= 0){
             // dp上に計算した値があったら
             let cost = get_dp_route_to_cost([start, end]);

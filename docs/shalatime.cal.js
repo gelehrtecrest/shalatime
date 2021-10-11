@@ -234,6 +234,7 @@ $(function() {
         console.log(list);
         console.log(route);
         let key = get_dp_key(list);
+        console.log(key);
         dp_route[key] = route;
     }
     function get_dp_route_to_cost(list){
@@ -241,7 +242,10 @@ $(function() {
         return dp_route_to_cost[key];
     }
     function get_dp_route(list){
+        console.log("get_dp_route%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         let key = get_dp_key(list);
+        console.log(key);
+        console.log(dp_route[key]);
         return dp_route[key];
     }
     function get_dp_key(list){

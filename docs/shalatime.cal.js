@@ -377,16 +377,24 @@ $(function() {
             if(return_cost < 0){
                 return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
                 // pass要素だけ消す
+                console.log("return cost 1[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
+                console.log(start_to_pass_route);
+                console.log(pass_to_end_route_count_cost[0]);
                 let tmp_route_without_pass = pass_to_end_route_count_cost[0];
                 tmp_route_without_pass.shift();
                 return_route = start_to_pass_route.concat(tmp_route_without_pass);
+                console.log(return_route);
             } else {
                 if(return_cost > start_to_pass_cost + pass_to_end_route_count_cost[2]){
                     return_cost = start_to_pass_cost + pass_to_end_route_count_cost[2];
+                    console.log("return cost 2[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
+                    console.log(start_to_pass_route);
+                    console.log(pass_to_end_route_count_cost[0]);
                     // pass要素だけ消す
                     let tmp_route_without_pass = pass_to_end_route_count_cost[0];
                     tmp_route_without_pass.shift();
                     return_route = start_to_pass_route.concat(tmp_route_without_pass);
+                    console.log(return_route);
                 }
             }
             // 計算した数の追加

@@ -277,7 +277,7 @@ $(function() {
         console.log(passlist);
         console.log(passedlist);
 
-        
+
         if(passlist.length <= 0){
             // dp上に計算した値があったら
             let cost = get_dp_route_to_cost([start, end]);
@@ -388,6 +388,10 @@ $(function() {
             // 計算した数の追加
             return_count = return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
         });
+
+        console.log("return------------");
+        console.log(key_start_passlist_end);
+        console.log(return_cost);
         // dpを更新
         set_dp_route_to_cost(key_start_passlist_end, return_cost);
         set_dp_route_to_route(key_start_passlist_end, return_route);

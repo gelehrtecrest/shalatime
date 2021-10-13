@@ -27,8 +27,6 @@ $(function() {
                     if(!flag){
                         searchResult.push(key);
                     }
-                } else{
-                    console.log('no hit');
                 }
             });
         }
@@ -48,7 +46,7 @@ $(function() {
     };
 
     function searchInfo(message){
-        $('#searchInfo').val(message);
+        $('#searchInfo').text(message);
     }
 
     // 

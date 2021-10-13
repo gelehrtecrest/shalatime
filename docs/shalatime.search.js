@@ -53,8 +53,11 @@ $(function() {
     }
 
     function colorNav(id){
+        console.log(id);
         key_list.forEach(function(keyword){
+            console.log(keyword);
             let tmp_id = keyword_id[keyword];
+            console.log(tmp_id);
             let tmp = $("#" + tmp_id);
             if(tmp !== undefined){
                 if(id == tmp_id){

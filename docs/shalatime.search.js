@@ -21,7 +21,7 @@ $(function() {
                         }
                     })
                     if(!flag){
-                        searchResult.push(key);
+                        searchResult.push(keyword_tab[key]);
                     }
                 }
             });

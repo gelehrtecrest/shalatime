@@ -14,7 +14,6 @@ $(function() {
         // 検索ボックスに値が入ってる場合
         if (searchText != '') {
             key_list.forEach(function(key){
-                console.log(key)
                 if(key.indexOf(searchText) != -1){
                     console.log('hit');
                     // 検索キーワードとkeyが部分一致している場合

@@ -353,9 +353,10 @@ $(function() {
                     if(i > 0){
                         tmp_route_without_pass.push(point);
                     }
-                    i++
+                    i++;
                 });
                 return_route = start_to_pass_route.concat(tmp_route_without_pass);
+                console.log(return_route);
             } else {
                 if(return_cost > start_to_pass_cost + pass_to_end_cost){
                     return_cost = start_to_pass_cost + pass_to_end_cost;
@@ -366,9 +367,10 @@ $(function() {
                         if(i > 0){
                             tmp_route_without_pass.push(point);
                         }
-                        i++
+                        i++;
                     });
                     return_route = start_to_pass_route.concat(tmp_route_without_pass);
+                    console.log(return_route);
                 }
             }
             // 計算した数の追加

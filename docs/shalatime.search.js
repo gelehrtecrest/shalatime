@@ -45,6 +45,7 @@ $(function() {
         } else {
             searchInfo('検索で複数のタブが見つかりましたので、その1つを表示します');
             showTab(searchResult[0]);
+            colorNav(searchResult_id[0]);
         }
     };
 

@@ -74,8 +74,8 @@ $(function() {
 
             keyword_tab[keyword] = tab;
             keyword_tab[keyword_en] = tab;
-            key_list.push[keyword];
-            key_list.push[keyword_en];
+            key_list.push(keyword);
+            key_list.push(keyword_en);
         });
 
         console.log(keyword_tab);

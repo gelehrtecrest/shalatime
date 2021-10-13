@@ -26,6 +26,9 @@ const twitter_str_prefix = 'https://twitter.com/intent/tweet?text=';
 const twitter_str_suffix = '%20%23シャーレタイム%20https%3A%2F%2Fgelehrtecrest.github.io%2Fshalatime%2F';
 // 深さを1とする
 const deep_start_to_end = 1;
+// 通過点の最大値
+const pass_limit = 5;
+
 
 $(function() {
     var all_travel_cost_table;
@@ -100,9 +103,22 @@ $(function() {
 
     // 計算ボタン
     $('#buttoncal').on('click', function() {
+        // 通過点の最大数を制限しておく
+        if(!is_limit_pass()){
+            return;
+        }
         // 巡回セールスマン問題を解きます
         travelingHikasen(all_travel_cost_table);
     });
+
+    // 通過点の最大数を制限しておく
+    function is_limit_pass(){
+        if(getPassPoints().length > pass_limit){
+            alert('通過点に設定できる最大数を' + pass_limit + 'までにしてください');
+            return false;
+        }
+        return true;
+    }
 
     // main
     // 定義
@@ -375,6 +391,11 @@ $(function() {
             }
             // 計算した数の追加
             return_count = return_count + start_to_pass_route_count_cost[1] + pass_to_end_route_count_cost[1];
+
+            // 現在の状態を表示
+            routenum_cal = return_count;
+            route_str = toRouteString(return_route);
+            show_travel_var();
 
             // 以下は動的計画法を使おうとした名残
             /*

@@ -87,11 +87,12 @@ $(function() {
     }
 
     function showTab(tab){
-        // 現在アクティブなタブからactiveを消す
-        let remove_id = $(".active").attr('id');
-        $('#' + remove_id).removeClass('active')
-        // 現在表示されているタブからshowを消す
-        $('#' + remove_id).removeClass("show");
+        $(".tab-pane").each(function(){
+            // すべてのタブからactiveを消す
+            $(this).removeClass('active')
+            // タブからshowを消す
+            $(this).removeClass("show");
+        });
 
         // 新しく表示されるtabにactiveをつける
         $('#' + tab).addClass("active");

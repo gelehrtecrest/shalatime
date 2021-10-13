@@ -350,7 +350,7 @@ $(function() {
                 let i = 0;
                 pass_to_end_route_count_cost[0].forEach(function(point){
                     if(i > 0){
-                        tmp_passedlist_pass.push(point);
+                        tmp_route_without_pass.push(point);
                     }
                     i++
                 });
@@ -359,11 +359,11 @@ $(function() {
                 if(return_cost > start_to_pass_cost + pass_to_end_cost){
                     return_cost = start_to_pass_cost + pass_to_end_cost;
                     // pass要素だけ消す
-                    let tmp_route_without_pass = pass_to_end_route_count_cost[0];
+                    let tmp_route_without_pass = [];
                     let i = 0;
                     pass_to_end_route_count_cost[0].forEach(function(point){
                         if(i > 0){
-                            tmp_passedlist_pass.push(point);
+                            tmp_route_without_pass.push(point);
                         }
                         i++
                     });

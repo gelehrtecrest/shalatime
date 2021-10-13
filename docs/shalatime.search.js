@@ -66,11 +66,11 @@ $(function() {
         // 2行目から出発点とテレポ代を取得する
         keyword_tab_csv.forEach(function(item){
             // 3列目はtabのリスト
-            let tab = item[3];
+            let tab = item[2];
             // 4列目は検索キーワード(日本語)
-            let keyword = item[4];
+            let keyword = item[3];
             // 5列名は金策キーワード(英語)
-            let keyword_en = item[5];
+            let keyword_en = item[4];
 
             keyword_tab[keyword] = tab;
             keyword_tab[keyword_en] = tab;

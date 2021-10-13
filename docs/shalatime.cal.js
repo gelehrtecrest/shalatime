@@ -642,7 +642,7 @@ $(function() {
         // 2つ目以降のエーテライトが無料・半額の場合はその旨も記載
         routearr.forEach(function(point){
             if(str == ""){
-                str = get_aetheryte_name(point);
+                str = get_aetheryte_short_name(point);
             } else {
                 str = str + " → " + get_aetheryte_short_name(point) + get_zero_or_half_name(point);
             }

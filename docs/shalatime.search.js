@@ -37,6 +37,7 @@ $(function() {
             }
         } else if(searchResult.length == 1){
             searchInfo('以下のタブが見つかりました');
+            showTab(searchResult[0]);
         } else {
             searchInfo('検索で複数のタブが見つかりました。もう少し絞り込んでください。')
         }

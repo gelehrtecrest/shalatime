@@ -21,6 +21,7 @@
 		<!-- 自作スクリプト -->
 		<script src="shalatime.setting.js"></script>
 		<script src="shalatime.cal.js"></script>
+		<script src="shalatime.search.js"></script>
 		<script src="popper.min.js"></script>
 		<script src="bootstrap.min.js"></script>
 		<link href="bootstrap.min.css" rel="stylesheet">
@@ -42,7 +43,19 @@
 		</div>
 		<div class="container">
 			<div class="alert alert-success">Step1. 出発・到着・通過するエーテライトにチェックを入れてください。</div>
-			<button id="buttoncheckreset-start-end-pass" type="button" class="btn btn-success">チェックリセット</button>
+			<div class="container">
+				<button id="buttoncheckreset-start-end-pass" type="button" class="btn btn-success">チェックリセット</button>
+				<hr />
+				<div class="row">
+					<div class="col-sm">
+						<input class="form-control" type="text" placeholder="エーテライトを検索できます">
+					</div>
+					<div class="col-sm">
+						<p id="searchInfo" class="alert alert-info"></p>
+					</div>
+				</div>
+			  </div>
+			
 			<ul class="nav nav-tabs">
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">居住区</a>

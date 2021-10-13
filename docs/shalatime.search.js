@@ -53,17 +53,14 @@ $(function() {
     }
 
     function colorNav(id){
-        console.log(id);
         key_list.forEach(function(keyword){
-            console.log(keyword);
             let tmp_id = keyword_id[keyword];
-            console.log(tmp_id);
             let tmp = $("#" + tmp_id);
             if(tmp !== undefined){
                 if(id == tmp_id){
-                    tmp.addClass("bg-success");
+                    tmp.addClass("bg-warning");
                 } else {
-                    tmp.removeClass("bg-success");
+                    tmp.removeClass("bg-warning");
                 }
             }
         })
@@ -77,7 +74,6 @@ $(function() {
         $('#' + remove_id).removeClass("show");
 
         // 新しく表示されるtabにactiveをつける
-        console.log(tab);
         $('#' + tab).addClass("active");
         // 新しく表示されるtabにactiveをつける
         $('#' + tab).addClass("show");

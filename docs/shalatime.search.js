@@ -32,7 +32,7 @@ $(function() {
 
         // searchResultが0の場合
         if(searchResult.length <= 0){
-            colorNav('');
+            colorNav(['']);
             if(searchText ==''){
                 searchInfo('検索できます');
             } else {

@@ -341,6 +341,7 @@ $(function() {
             let start_to_pass_route_count_cost = getBest2PointRoute(start, pass);
 
             //返り値
+            let start_to_pass_route = start_to_pass_route_count_cost[0];
             let start_to_pass_cost = start_to_pass_route_count_cost[2];
             let pass_to_end_cost = pass_to_end_route_count_cost[2];
             if(return_cost < 0){
@@ -371,7 +372,7 @@ $(function() {
                 }
             }
             // 計算した数の追加
-            return_count = return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
+            return_count = return_count + start_to_pass_route_count_cost[1] + pass_to_end_route_count_cost[1];
 
             // 以下は動的計画法を使おうとした名残
             /*

@@ -41,11 +41,11 @@ $(function() {
         } else if(searchResult.length == 1){
             searchInfo('以下のタブが見つかりました');
             showTab(searchResult[0]);
-            colorNav(searchResult_id[0]);
+            colorNav(searchResult_id);
         } else {
             searchInfo('検索で複数のタブが見つかりましたので、その1つを表示します');
             showTab(searchResult[0]);
-            colorNav(searchResult_id[0]);
+            colorNav(searchResult_id);
         }
     };
 
@@ -53,18 +53,27 @@ $(function() {
         $('#searchInfo').text(message);
     }
 
-    function colorNav(id){
+    function colorNav(ids){
+        // リセット
         key_list.forEach(function(keyword){
             let tmp_id = keyword_id[keyword];
             let tmp = $("#" + tmp_id);
             if(tmp !== undefined){
-                if(id == tmp_id){
-                    tmp.addClass("bg-warning");
-                } else {
-                    tmp.removeClass("bg-warning");
-                }
+                tmp.removeClass("bg-warning");
             }
-        })
+        });
+        // 色をつける
+        key_list.forEach(function(keyword){
+            ids.forEach(function(id){
+                let tmp_id = keyword_id[keyword];
+                let tmp = $("#" + tmp_id);
+                if(tmp !== undefined){
+                    if(id == tmp_id){
+                        tmp.addClass("bg-warning");
+                    }
+                }
+            });
+        });
     }
 
     function showTab(tab){

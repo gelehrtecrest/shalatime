@@ -56,12 +56,16 @@ $(function() {
     function colorNav(ids){
         // リセット
         key_list.forEach(function(keyword){
-            let tmp_id = keyword_id[keyword];
-            let tmp = $("#" + tmp_id);
-            if(tmp !== undefined){
-                tmp.removeClass("bg-warning");
-            }
+            let tmp_ids = keyword_id[keyword];
+            let tmp_id_list = tmp_ids.split('/');
+            tmp_id_list.forEach(function(tmp_id){
+                let tmp = $("#" + tmp_id);
+                if(tmp !== undefined){
+                    tmp.removeClass("bg-warning");
+                }
+            });
         });
+
         // 色をつける
         key_list.forEach(function(keyword){
             ids.forEach(function(ids_str){

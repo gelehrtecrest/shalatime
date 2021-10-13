@@ -273,11 +273,11 @@ $(function() {
         reset_dp_route_to_cost();
 
         // 通過点のリストから1つ取り、現在点から通過点の最安ルートを探す
-        let route_count = sub_getAllRoute(start, end, passlist, [start]);
+        let route_count_cost = sub_getAllRoute(start, end, passlist, [start]);
         // 一巡のルートからdpを検索し、ルートを求める
-        let key_route = passlist.concat(start, end);
-        route_list = get_dp_route(key_route);
-        return [route_list, route_count[1]];
+        //let key_route = passlist.concat(start, end);
+        //route_list = get_dp_route(key_route);
+        return [route_count_cost[0], route_count_cost[1]];
     }
 
     // 通過点のリストから1つ取り、現在点から通過点の最安ルートを探す

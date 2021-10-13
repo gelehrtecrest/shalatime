@@ -49,7 +49,7 @@ $(function() {
 
     function showTab(tab){
         // 現在アクティブなタブからactiveを消す
-        let remove_id = $(".active").atrr('id');
+        let remove_id = $(".active").attr('id');
         $('#' + remove_id).removeClass('active')
         // 現在表示されているタブからshowを消す
         $('#' + remove_id).removeClass("show");

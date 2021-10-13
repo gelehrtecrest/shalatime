@@ -9,7 +9,6 @@ $(function() {
         //
         let searchText = $('#search-text').val();
         let searchResult = [];
-        console.log(searchText);
         // 検索ボックスに値が入ってる場合
         if (searchText != '') {
             key_list.forEach(function(key){
@@ -55,6 +54,7 @@ $(function() {
         $('#' + remove_id).removeClass("show");
 
         // 新しく表示されるtabにactiveをつける
+        console.log(tab);
         $('#' + tab).addClass("active");
         // 新しく表示されるtabにactiveをつける
         $('#' + tab).addClass("show");
@@ -86,9 +86,6 @@ $(function() {
             key_list.push(keyword);
             key_list.push(keyword_en);
         });
-
-        console.log(keyword_tab);
-        console.log(key_list);
     }
 
        

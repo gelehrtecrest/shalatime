@@ -27,7 +27,7 @@ const twitter_str_suffix = '%20%23シャーレタイム%20https%3A%2F%2Fgelehrte
 // 深さを1とする
 const deep_start_to_end = 1;
 // 通過点の最大値
-const pass_limit = 10;
+const pass_limit = 5;
 
 
 $(function() {

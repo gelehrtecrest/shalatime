@@ -246,15 +246,11 @@ $(function() {
         dp_route_to_cost[key] = cost;
     }
     function set_dp_route_to_route(list, route){
-        console.log("set_dp_route_to_route-----------------------------------------");
-        console.log(list);
-        console.log(route);
         let tmp_route = [];
         route.forEach(function(point){
             tmp_route.push(point);
         });
         let key = get_dp_key(list);
-        console.log(key);
         dp_route[key] = tmp_route;
     }
     function get_dp_route_to_cost(list){
@@ -262,10 +258,7 @@ $(function() {
         return dp_route_to_cost[key];
     }
     function get_dp_route(list){
-        console.log("get_dp_route%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
         let key = get_dp_key(list);
-        console.log(key);
-        console.log(dp_route[key]);
         return dp_route[key];
     }
     function get_dp_key(list){
@@ -299,13 +292,7 @@ $(function() {
     // 通過点のリストから1つ取り、現在点から通過点の最安ルートを探す
     // passlistが空白の時、startからendへの最安ルートを求める
     function sub_getAllRoute(start, end, passlist, passedlist){
-        console.log("sub_getAllRoute----------------");
-        console.log(start);
-        console.log(end);
-        console.log(passlist);
-        console.log(passedlist);
-
-
+        
         if(passlist.length <= 0){
             // dp上に計算した値があったら
             let cost = get_dp_route_to_cost([start, end]);
@@ -372,7 +359,6 @@ $(function() {
                     i++;
                 });
                 return_route = start_to_pass_route.concat(tmp_route_without_pass);
-                console.log(return_route);
             } else {
                 if(return_cost > start_to_pass_cost + pass_to_end_cost){
                     return_cost = start_to_pass_cost + pass_to_end_cost;
@@ -386,7 +372,6 @@ $(function() {
                         i++;
                     });
                     return_route = start_to_pass_route.concat(tmp_route_without_pass);
-                    console.log(return_route);
                 }
             }
             // 計算した数の追加

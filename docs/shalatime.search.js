@@ -9,13 +9,11 @@ $(function() {
         //
         let searchText = $('#search-text').val();
         let searchResult = [];
-        searchInfo("");
         console.log(searchText);
         // 検索ボックスに値が入ってる場合
         if (searchText != '') {
             key_list.forEach(function(key){
                 if(key.indexOf(searchText) != -1){
-                    console.log('hit');
                     // 検索キーワードとkeyが部分一致している場合
                     let flag = false;
                     searchResult.forEach(function(result){
@@ -46,6 +44,19 @@ $(function() {
 
     function searchInfo(message){
         $('#searchInfo').text(message);
+    }
+
+    function showTab(tab){
+        // 現在アクティブなタブからactiveを消す
+        let remove_id = $(".active").atrr('id');
+        $('#' + remove_id).removeClass('active')
+        // 現在表示されているタブからshowを消す
+        $('#' + remove_id).removeClass("show");
+
+        // 新しく表示されるtabにactiveをつける
+        $('#' + tab).addClass("active");
+        // 新しく表示されるtabにactiveをつける
+        $('#' + remove_id).addClass("show");
     }
 
     // 

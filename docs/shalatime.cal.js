@@ -318,7 +318,63 @@ $(function() {
 
 
         // 通過点リストから1つ取り出す
+        // 一旦ここから先の計算を動的計画法を使わずに解く
         passlist.forEach(function(pass){
+            // 既に通過した点リストを確保しておく
+            let tmp_passedlist = [];
+            passedlist.forEach(function(p){
+                tmp_passedlist.push(p);
+            })
+            // 既に通過した点リストにpassを追加する
+            tmp_passedlist.push(pass);
+            // 通過点リストから、選ばれていない通過点をまとめたリストを作る
+            let remaining_passlist = [];
+            tmp_passlist.forEach(function(tmp_pass){
+                if(pass != tmp_pass){
+                    remaining_passlist.push(tmp_pass);
+                }
+            });
+
+            // 通過点から到着点までの計算をする
+            let pass_to_end_route_count_cost = sub_getAllRoute(pass, end, remaining_passlist, tmp_passedlist);
+            // startから通過点までの計算をする
+            let start_to_pass_route_count_cost = getBest2PointRoute(start, pass);
+
+            //返り値
+            let start_to_pass_cost = start_to_pass_route_count_cost[2];
+            let pass_to_end_cost = pass_to_end_route_count_cost[2];
+            if(return_cost < 0){
+                return_cost = start_to_pass_cost + pass_to_end_cost;
+                // pass要素だけ消す
+                let tmp_route_without_pass = [];
+                let i = 0;
+                pass_to_end_route_count_cost[0].forEach(function(point){
+                    if(i > 0){
+                        tmp_passedlist_pass.push(point);
+                    }
+                    i++
+                });
+                return_route = start_to_pass_route.concat(tmp_route_without_pass);
+            } else {
+                if(return_cost > start_to_pass_cost + pass_to_end_cost){
+                    return_cost = start_to_pass_cost + pass_to_end_cost;
+                    // pass要素だけ消す
+                    let tmp_route_without_pass = pass_to_end_route_count_cost[0];
+                    let i = 0;
+                    pass_to_end_route_count_cost[0].forEach(function(point){
+                        if(i > 0){
+                            tmp_passedlist_pass.push(point);
+                        }
+                        i++
+                    });
+                    return_route = start_to_pass_route.concat(tmp_route_without_pass);
+                }
+            }
+            // 計算した数の追加
+            return_count = return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
+
+            // 以下は動的計画法を使おうとした名残
+            /*
             console.log("forEach==============================");
             console.log(pass);
             // まず、通過した点とpassの値まで通過したところまでの最安ルート・コストを計算する
@@ -426,8 +482,10 @@ $(function() {
             }
             // 計算した数の追加
             return_count = return_count + start_to_pass_count + pass_to_end_route_count_cost[1];
+            */
         });
 
+        /*
         console.log("return------------");
         console.log(key_start_passlist_end);
         console.log(return_cost);
@@ -435,6 +493,7 @@ $(function() {
         // dpを更新
         set_dp_route_to_cost(key_start_passlist_end, return_cost);
         set_dp_route_to_route(key_start_passlist_end, return_route);
+        */
         return [return_route, return_count, return_cost];
     }
 

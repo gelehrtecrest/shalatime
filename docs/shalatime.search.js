@@ -88,10 +88,13 @@ $(function() {
 
     function showTab(tab){
         $(".tab-pane").each(function(){
-            // すべてのタブからactiveを消す
-            $(this).removeClass('active')
-            // タブからshowを消す
-            $(this).removeClass("show");
+            if($(this).attr('id').indexOf('setting') == -1){
+                // 設定の方のタブは消さないように
+                // すべてのタブからactiveを消す
+                $(this).removeClass('active')
+                // タブからshowを消す
+                $(this).removeClass("show");
+            }
         });
 
         // 新しく表示されるtabにactiveをつける

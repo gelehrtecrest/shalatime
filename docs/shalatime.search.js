@@ -7,7 +7,7 @@ $(function() {
 
     function searchWord(){
         //
-        let searchText = $('search-text').val();
+        let searchText = $('#search-text').val();
         let searchResult = [];
         searchInfo("");
         console.log(searchText);

@@ -57,7 +57,7 @@ $(function() {
         // 新しく表示されるtabにactiveをつける
         $('#' + tab).addClass("active");
         // 新しく表示されるtabにactiveをつける
-        $('#' + remove_id).addClass("show");
+        $('#' + tab).addClass("show");
     }
 
     // 

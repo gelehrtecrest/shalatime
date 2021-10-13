@@ -30,7 +30,7 @@ $(function() {
         // searchResultが0の場合
         if(searchResult.length <= 0){
             if(searchText ==''){
-                searchInfo('');
+                searchInfo('検索できます');
             } else {
                 searchInfo('検索で見つかりませんでした。キーワードを変えてみてください');
             }
@@ -38,7 +38,8 @@ $(function() {
             searchInfo('以下のタブが見つかりました');
             showTab(searchResult[0]);
         } else {
-            searchInfo('検索で複数のタブが見つかりました。もう少し絞り込んでください。')
+            searchInfo('検索で複数のタブが見つかりましたので、その1つを表示します');
+            showTab(searchResult[0]);
         }
     };
 

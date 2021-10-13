@@ -2,6 +2,7 @@ const filecsv_keyword_tab_table = 'keyword_tab_table.csv';
 
 
 $(function() {
+    let keyword_id = {};
     let keyword_tab = {};
     let key_list = [];
 
@@ -9,6 +10,7 @@ $(function() {
         //
         let searchText = $('#search-text').val();
         let searchResult = [];
+        let searchResult_id = [];
         // 検索ボックスに値が入ってる場合
         if (searchText != '') {
             key_list.forEach(function(key){
@@ -22,6 +24,7 @@ $(function() {
                     })
                     if(!flag){
                         searchResult.push(keyword_tab[key]);
+                        searchResult_id.push(keyword_id[key]);
                     }
                 }
             });
@@ -29,6 +32,7 @@ $(function() {
 
         // searchResultが0の場合
         if(searchResult.length <= 0){
+            colorNav('');
             if(searchText ==''){
                 searchInfo('検索できます');
             } else {
@@ -37,6 +41,7 @@ $(function() {
         } else if(searchResult.length == 1){
             searchInfo('以下のタブが見つかりました');
             showTab(searchResult[0]);
+            colorNav(searchResult_id[0]);
         } else {
             searchInfo('検索で複数のタブが見つかりましたので、その1つを表示します');
             showTab(searchResult[0]);
@@ -45,6 +50,20 @@ $(function() {
 
     function searchInfo(message){
         $('#searchInfo').text(message);
+    }
+
+    function colorNav(id){
+        key_list.forEach(function(keyword){
+            let tmp_id = keyword_id[keyword];
+            let tmp = $("#" + tmp_id);
+            if(tmp !== undefined){
+                if(id == tmp_id){
+                    tmp.addClass("bg-success");
+                } else {
+                    tmp.removeClass("bg-success");
+                }
+            }
+        })
     }
 
     function showTab(tab){
@@ -65,6 +84,7 @@ $(function() {
     $.get(filecsv_keyword_tab_table, parseKeywordTabTableCsv, 'text');
     function parseKeywordTabTableCsv(data) {
         // 初期化
+        keyword_id = {};
         keyword_tab = {};
         key_list = [];
 
@@ -75,6 +95,8 @@ $(function() {
 
         // 2行目から出発点とテレポ代を取得する
         keyword_tab_csv.forEach(function(item){
+            // 2列目はid
+            let id = item[1];
             // 3列目はtabのリスト
             let tab = item[2];
             // 4列目は検索キーワード(日本語)
@@ -82,6 +104,8 @@ $(function() {
             // 5列名は金策キーワード(英語)
             let keyword_en = item[4];
 
+            keyword_id[keyword] = id;
+            keyword_id[keyword_en] = id;
             keyword_tab[keyword] = tab;
             keyword_tab[keyword_en] = tab;
             key_list.push(keyword);
